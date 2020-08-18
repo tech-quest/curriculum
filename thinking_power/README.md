@@ -66,9 +66,9 @@
 
 それは「脳細胞の割り当ての多くが"手"に割かれている」からなのです。
 
-[なぜ手は“第二の脳”と呼ばれるのか。手遊びトレーニングで脳の活性化を促す](https://melos.media/children/28280/)
-
-[「指は第二の脳である」と言われるワケ](https://brain-gr.com/tokinaika_clinic/blog/publication/post-776/)
+【参考URL】
+- [なぜ手は“第二の脳”と呼ばれるのか。手遊びトレーニングで脳の活性化を促す](https://melos.media/children/28280/)
+- [「指は第二の脳である」と言われるワケ](https://brain-gr.com/tokinaika_clinic/blog/publication/post-776/)
 
 そのため「手を使う」ことが、そのまま脳に刺激を与え、活性化に繋がるのです。
 
