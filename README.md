@@ -9,5 +9,5 @@
 1. [学習方針 (日々取り組んでいただくこと)](about_tech_quest/educational_policy.md)
 1. [「Paiza」カリキュラム](paiza/index.md)
 1. [「Webアプリケーション」カリキュラム](web_application/index.md)
-1. [【準備中】「思考力トレーニング」カリキュラム](thinking_power/README.md)
+1. [「思考力トレーニング」カリキュラム](thinking_power/README.md)
 
