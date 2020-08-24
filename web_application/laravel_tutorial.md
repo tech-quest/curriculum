@@ -4,18 +4,24 @@
 Laravelのインストールには様々な方法がありますが、ここではComposerを使用します。
 create-projectコマンドを使用することで、インストールと同時にプロジェクトを作成することができます。
 
-```bash
-    % composer create-project laravel/laravel sample
-```
-
-実行が完了すると「Application key set successfully.」と表示されます。
-その後、lsコマンドで「sample」フォルダが作成されていることを確認したら、ディレクトリを移動します
+Macでターミナルを起動し、以下のコマンドを実行してみましょう。
 
 ```bash
-    % cd sample
+% composer create-project laravel/laravel sample
 ```
 
-以降はsampleディレクトリで作業をしていきます。
+実行が完了すると以下の表示がターミナルに表示されます。
+```bash
+Application key set successfully.
+```
+その後、lsコマンドで「sample」フォルダが作成されていることを確認したら、ディレクトリを移動します。
+cdコマンドを実行します。
+
+```bash
+ % cd sample
+```
+
+以降は`sampleディレクトリで作業をしている前提でお話ししていきます`！
 
 ## Laravelプロジェクトのディレクトリ構成
 
@@ -38,91 +44,71 @@ Laravelプロジェクトを作成すると、以下のようなディレクト�
 
 この構成に従ってWebアプリケーションを作っていくことになります。
 いくつか重要なファイルがあるので、実際に使用する前に簡単に紹介します。
+以下のリンクから確認してください。
 
-### .envファイル
-sampleディレクトリ直下には、「.env」というファイルがあります。
-アプリケーションの環境設定情報を記述するファイルです。
-具体的には暗号化キーやデータベースの接続情報を記述します。
-
-> GitHubなどPublicなリポジトリを利用される場合は扱いに注意しましょう。
-
-### artisanファイル
-sampleディレクトリ直下に「artisan」というファイルがあります。
-artisanファイルはLaravelのコマンドラインツールであるArtisanの実行ファイルです。
-LaravelではArtisanコマンドを使用して様々な操作を行います。主なものを紹介します。
-
-1. serveコマンド
-
-PHPの組み込みサーバーで、Laravelプロジェクトを動作させます。
-自端末（ローカル）で動作させる際に実行します。
-
-```bash
-% php artisan serve --host=localhost --port=8000
-Laravel development server started: <http://localhost:8000>
-```
-> --hostオプションと--portオプションは省略できます。
-
-
-2. route:listコマンド
-
-ルーティング定義の一覧を表示します。
-
-```bash
-% php artisan route:list
-+--------+----------+----------+------+---------+--------------+
-| Domain | Method   | URI      | Name | Action  | Middleware   |
-+--------+----------+----------+------+---------+--------------+
-|        | GET|HEAD | /        |      | Closure | web          |
-|        | GET|HEAD | api/user |      | Closure | api,auth:api |
-+--------+----------+----------+------+---------+--------------+
-```
-
-例えば1行目は、ルート（http://localhost:8000 ）でGETリクエストを受け付けていることを表しています。
-詳しくは後ほど使いながら見てみましょう。
-
-3. tinkerコマンド
-
-プロジェクトをREPL(Read Eval Print Loop）で起動します。
-REPLとは、打ち込んだコードが即時に結果を返してくれる仕組みのことを言います。
-
-```bash
-% php artisan tinker
-Psy Shell v0.9.9 (PHP 7.1.16 — cli) by Justin Hileman
->>> $name = 'Laravel';
-=> "Laravel"
->>> echo 'Hello ' . $name;
-Hello Laravel⏎
->>>
-```
-
-プロジェクト内のオブジェクトがどんなメソッドを持っていたかなど簡単に確認できます。
-tinkerはデバッグ時に力を発揮します。「ビューの作成」の章で説明します。
+[Laravelの補足情報](/web_application/laravel_tutorial/about_laravel_info.md)
 
 ## データベース設定
 
-Laravelプロジェクトを作成したら、まずデータベースの設定をします。
+Laravelプロジェクトを作成したら、次にデータベースの設定をします。
 最初は以下の作業が必要になります。
 
+- インストール
 - 接続設定
 - マイグレーション
 - モデル作成
 - シーディング
 
-### 接続設定
+#### **1.インストール**
+
+ご自身の端末にMySQLのインストールをされていない方は、以下のリンクから`MySQLのインストール手順`を確認して、
+インストールを行ってください。
+
+[MySQLのインストール手順](/web_application/laravel_tutorial/install_mysql.md)
+
+#### **2.データベースの作成方法**
+
+MySQLのインストールを作成したら、次はデータベースを作成しましょう。
+こちらも以下のリンクを確認して、データベースを作成しましょう。
+
+[データベースの作成方法](web_application/laravel_tutorial/create_database.md)
+
+なお、ここで作成したデータベースを以後のチュートリアルで利用する場合は、
+ - データベース名
+ - データベースのユーザー名
+ - データベースのパスワード
+
+が必要になりますので、忘れずに控えておいてください。
+
+#### **3.接続設定**
 
 データベースへの接続情報は.envファイルに記述します。
-初期値では以下のようになっています。自身の環境に合わせて設定してください。
+上記のデータベースの作成方法で作成したデータベースを利用する場合は、`.env`ファイルを修正します。
+.envファイルは、プロジェクトの直下に存在します。
+
+> .env
 
 ```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=homestead
-DB_USERNAME=homestead
-DB_PASSWORD=secret
+DB_DATABASE=sample
+DB_USERNAME=samplelaravel
+DB_PASSWORD=samplequest
 ```
 
->上記の場合、ローカルにMySQLをインストールし、homesteadデータベースを作成、homeseteadというユーザーをsecretというパスワードで作成すればOKです
+ポイントは、
+ - DB_DATABASE=sample
+ - DB_USERNAME=samplelaravel
+ - DB_PASSWORD=samplequest
+
+と、データベースの作成方法のカリキュラムで作成したものを設定します、これでlaravelからデータベースへアクセスすることが出来ます。
+
+一旦設定を反映させるために、以下のコマンドを実行します。
+
+```bash
+php artisan config:cache
+```
 
 ## マイグレーション
 
@@ -132,14 +118,19 @@ DB_PASSWORD=secret
 1. マイグレーションファイルの作成
 1. マイグレーションの実行
 
-### 1. マイグレーションファイルの作成
+#### **1. マイグレーションファイルの作成**
 
 マイグレーションファイルの作成にはArtisanのmake:migrationコマンドを使用します。
 ファイル名は何でも構いませんが、どのような操作を行ったのかわかる名前をつけると良いでしょう。
-Booksテーブルを作成するマイグレーションファイルを作成します。
+booksテーブルを作成するマイグレーションファイルを作成します。
 
 ```bash
 % php artisan make:migration create_books_table --create=books
+```
+
+以下のメッセージが出力されれば成功です。
+
+```bash
 Created Migration: 2018_10_30_085034_create_books_table
 ```
 
@@ -182,7 +173,11 @@ class CreateBookTable extends Migration
 ```
 
 マイグレーションファイルではupメソッドにテーブル作成時の情報、downメソッドにマイグレーションを取り消す際の情報を記述します。
-現在の内容は、主キーとなるIDと、タイムスタンプを持つBooksテーブルを作成、取り消し時はBooksテーブルを削除するという内容になっています。以下のようなテーブルを作成したいとしましょう。
+現在の内容は、主キーとなるIDと、タイムスタンプを持つbooksテーブルを作成、取り消し時はbooksテーブルを削除するという内容になっています。
+
+#### **2. upメソッドの修正**
+
+以下のようなテーブルを作成したいとしましょう。
 
 |物理名|型|制約|論理名|
 |:--:|:--:|:--:|:--:|
@@ -195,16 +190,50 @@ class CreateBookTable extends Migration
 |updated_at|timestamp||更新日|
 
 この場合、upメソッドを以下のように書き換えます。
+先程作成されたファイルを開いて、upメソッドを修正しましょう。
+
 >database/migrations/yyyy_mm_dd_hhssmm_create_books_table.php
+
 ```php
-public function up('books', funtion (Blueprint $table){
-    $table->increments('id');
-    $table->string('title', 100);
-    $table->string('author', 50);
-    $table->integer('price');
-    $table->text('comment')->nullable();
-    $table->timestamps();
-})
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateBooksTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('books', function (Blueprint $table) {
+            /*
+            *  以下のようにテーブルに持たせる項目を書きます。
+            */
+            $table->increments('id');
+            $table->string('title', 100);
+            $table->string('author', 50);
+            $table->integer('price');
+            $table->text('comment')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('books');
+    }
+}
+
 ```
 
 この記述方法はスキーマビルダと呼ばれています。
@@ -213,13 +242,17 @@ https://readouble.com/laravel/5.0/ja/schema.html
 
 これでマイグレーションファイルの作成が完了しました。
 
-### 2. マイグレーションの実行
+#### **3. マイグレーションの実行**
 
 マイグレーションの実行にはartisanのmigrateコマンドを実行します。
+以下のコマンドを実行しましょう。
 
 
 ```bash
 php artisan migrate
+```
+以下のようなメッセージが表示されれば成功です。
+```bash
 Migration table created successfully.
 Migrating: 2014_10_12_000000_create_users_table
 Migrated:  2014_10_12_000000_create_users_table (0.06 seconds)
@@ -230,6 +263,58 @@ Migrated:  2020_08_03_105918_create_book_table (0.02 seconds)
 ```
 
 これで、MySQLサーバー上にテーブルが作成されます。
+ターミナルの画面で、「⌘ + T」を押しましょう。ターミナル上に新しいタブが表示されます。
+そこで、テーブルが表示されるかを確認します。以下コマンドを実行しましょう。
+
+```bash
+$ mysql -u root -p
+```
+
+パスワードを聞かれたら、mysqlインストール時のパスワードを入力します。
+
+以下の画面が表示されれば成功です。
+
+```sql
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 550
+Server version: 5.7.28 Homebrew
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+```
+
+`mysql>`という表示がされれば、SQL文を入力できる状態となります。
+
+mysqlへログインした後、まずは利用するデータベースに接続します。以下コマンドを実行して下さい。
+
+```sql
+mysql> use sample
+```
+
+`use sample`は、データベースsampleを利用するよ！というコマンドです、今回は`sample`という名前のデータベースを
+利用していますので、まずはこのコマンドを実行しました。成功するとターミナルには以下の表示がされます。
+
+```sql
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+```
+
+次に以下のコマンドを実行します。このコマンドで、データベースに存在するテーブルの一覧が表示されます。
+
+```sql
+mysql> show tables;
+```
+結果、テーブルの一覧がターミナルに表示されます。以下booksが表示されたでしょうか？
 
 ```sql
 +------------------+
@@ -243,10 +328,16 @@ Migrated:  2020_08_03_105918_create_book_table (0.02 seconds)
 ```
 
 > ※usersテーブルとfailed_jobsテーブルのマイグレーションファイルはプロジェクト作成時に自動的に作成されたものです。今回は無視します。
-migrationsテーブルにはマイグレーションの情報が保存されます。
+また、migrationsテーブルにはマイグレーションの情報が保存されます。
 
 
-booksテーブルが指定された通りに作成されているか確認しましょう。
+booksテーブルが指定された通りに作成されているか確認しましょう。以下のコマンドを実行してください。
+
+```sql
+mysql> show columns from books;
+```
+
+結果として、以下のbooksテーブルの構成表が表示されますので、項目の名称が正しいかを確認してみましょう。
 
 ```sql
 +------------+------------------+------+-----+---------+----------------+
@@ -262,24 +353,13 @@ booksテーブルが指定された通りに作成されているか確認しま
 +------------+------------------+------+-----+---------+----------------+
 ```
 
-### 補足
+マイグレーションを取り消したい場合はmigrate:rollbackコマンドを利用します。
 
-マイグレーションを取り消したい場合はmigrate:rollbackコマンド、またはmigrate:resetコマンドを使用します。
-migrate:rollbackコマンドは直前のマイグレーションのみ取り消します。
+詳細は以下の開発をご覧ください。
 
-```bash
-% php artisan migrate:rollback
-Rolling back: 2018_10_30_085034_create_books_table
-Rolled back:  2018_10_30_085034_create_books_table
-```
+[rollbackについて](/web_application/laravel_tutorial.md) /
+[トップへ](/README.md)
 
-migrate:resetは全てのマイグレーションを取り消します。
-
-```bash
-% php artisan migrate:reset
-Rolling back: 2018_10_30_085034_create_books_table
-Rolled back:  2018_10_30_085034_create_books_table
-```
 
 ## モデルの作成
 
@@ -288,8 +368,15 @@ DB操作を行うためのクラスになります。
 詳しくは「Eloquent ORM」の章で説明します。
 モデルはArtisanの`make:model`コマンドで作成します。
 
+#### **1. モデルの作成**
+
+以下コマンドを実行しましょう。
+
 ```bash
 % php artisan make:model Book
+```
+以下のようなメッセージが表示されれば成功です。
+```bash
 Model created successfully.
 ```
 
@@ -309,7 +396,7 @@ class Book extends Model
 }
 ```
 
-中身は空ですが、このままで構いません。
+中身は空ですが、一旦このままで構いません。
 
 ### モデルの命名規則
 モデルは命名規則によってテーブルとマッピングされます。
@@ -322,12 +409,19 @@ class Book extends Model
 1. シーダーファイルの作成
 1. シーディングの実行
 
-### **1.シーダーファイルの作成**
+#### **1.シーダーファイルの作成**
 
 シーダーファイルはArtisanの`make:seeder`コマンドを使用して作成します。
 
+以下のコマンドを実行します。
+
 ```bash
 % php artisan make:seeder BooksTableSeeder
+```
+
+以下のようなメッセージが表示されれば成功です。
+
+```bash
 Seeder created successfully.
 ```
 
@@ -351,6 +445,8 @@ class BooksTableSeeder extends Seeder
     }
 }
 ```
+
+#### **2. テストデータの登録**
 
 Booksテーブルに、以下のレコードを登録したいとしましょう。
 
@@ -410,29 +506,60 @@ class BooksTableSeeder extends Seeder
 }
 ```
 
+#### **3. DatabaseSeeder.phpの修正**
+
 さらにDatabaseSeeder.phpのrunメソッドを以下のように修正します。runメソッド内でcallしたクラスが、シーディングコマンドで実行されるようになります。
 > database/seeds/DatabaseSeeder.php
+
 ```php
-public function run()
+<?php
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
 {
-     // BooksTableSeederを読み込むように指定
-     $this->call(BooksTableSeeder::class);
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // BooksTableSeederを読み込むように指定
+        $this->call(BooksTableSeeder::class);
+    }
 }
+
 ```
 
-## 2.シーディングの実行
-シーディングを実行するにはArtisanの`db:seed`コマンドを実行します。
+以上で準備完了です。
+
+## シーディングの実行
+
+#### 　**1. シーディングの実行**
+
+シーディングを実行するにはArtisanの`db:seed`コマンドを実行します。以下のコマンドを実行してください。
 
 ```bash
 % php artisan db:seed
+```
+
+以下のようなメッセージが表示されれば成功です。
+
+```bash
 Seeding: BooksTableSeeder
 Database seeding completed successfully.
 ```
 
-完了したらテーブルを確認しましょう。
+完了したらテーブルを確認しましょう。ターミナルでmysqlを起動するコマンドを実行して、SQLを実行しましょう。
 
 ```sql
 mysql> select * from books;
+```
+
+そうすると、以下のように表示されます。シーディングに定義したデータがテーブルに格納されていることがわかるかと思います。
+
+```sql
 +----+------------------------------------------+---------------+-------+---------------------------------------+---------------------+---------------------+
 | id | title                                    | author        | price | comment                               | created_at          | updated_at          |
 +----+------------------------------------------+---------------+-------+---------------------------------------+---------------------+---------------------+
@@ -449,68 +576,40 @@ mysql> select * from books;
 ## ルーティング
 データベースの準備が整ったらアプリケーションを作成します。
 まずはルーティングから行なっていきましょう。
-ルーティングとは、クライアントからのリクエストを受け付け、その内容によって処理を振り分けることです。
-ルーティング情報は`routes/web.php`ファイルに記述します。
 
-> routes/web.php
-```php
-<?php
-Route::get('/', function () {
-    return view('welcome');
-});
-```
+以下のリンクでルーティングの詳細な説明をしていますので、初めてチャレンジする方はまずこちらを確認しましょう！
 
-すでに一つルーティングが定義されています。
-これは、ルート(/)にGETリクエストがきた場合に、welcomeというビューをレスポンスとして返すという意味です。
-welcomeは`resources/views/welcome.blade.php`のことです。
+[ルーティングとは](/web_application/laravel_tutorial/about_routes.md)
 
-> Laravelはview関数を呼び出すと、resources/views/ディレクトリを探しにいきます。
-その中からファイル名（拡張子除く）が一致するものを返す仕組みとなっています。
+#### 1. ルーティングの設定
 
-Artisanコマンドでサーバーを立ち上げ、http://localhost:8000/ にアクセスしてみるとwelcome.blade.phpの内容が表示されます。
+それでは、ルーティングの設定をしましょう。以下をweb.phpに記載しましょう。
 
-なお、上記のように直接ビューを返すのではなく、コントローラを経由するようにルーティングするには以下のように記述します。
-
-> routes/web.php
-```php
-<?php
-Route::get('book', 'BookController@index');
-```
-
-上記のように記述した場合、「localhost:8000/bookにGETリクエストがきたら、BookControllerのindexメソッドに処理を振り分けて」という意味になります。この段階ではまだBookControllerを作成していないので正常に動作しません。
-
->BookControllerは「Controllerの作成」の章で作成します。
-
-## ルートパラメータ
-コントローラを作る前にルートパラメータについても知っておきましょう。
-
-> routes/web.php
-```php
-<?php
-Route::get('book/{id}', 'BookController@show');
-```
-
-上記のように記述した場合、「localhost:8000/book/1にGETリクエストがきたら、BookControllerのshowメソッドに処理を振り分けて」という意味になります。
-BookControllerではshowメソッドに引数を持たせるようにします。
-
-> app/Http/Controllers/BookController.php(未作成)
-```php
-public function show($id)
-{
-    return view('book', ['book' => Book::findOrFail($id)]);
-}
-```
-
-URIに指定された「1」という数字が$idという引数の中に代入されます。
-
-
-## Restfulリソースコントローラ
 Route::resourceメソッドを使用することで、Restfulなルーティングを行うことができます。
 
+> routes/web.php
 ```php
 <?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
 Route::resource('book', 'BookController');
 ```
+
+上記の通り設定すると、このURLでのアクセスだったらBookContoroller側のこのメソッドに処理をさせなさい、
+というルーティングを設定することが出来ます。
+ルーティングを設定すると、以下の通りとなります。
 
 |リクエストメソッド|URI|コントローラー|CRUD画面を作る際の主な用途|
 |:--:|:--:|:--:|:--:|
@@ -522,22 +621,32 @@ Route::resource('book', 'BookController');
 |PUT|/book/{book}|BookController@update|編集処理|
 |DELETE|/book/{book}|BookController@destroy|削除処理|
 
-> 以降、resourceメソッドでルーティングしている前提でコントローラを作成します。
+`以降、resourceメソッドでルーティングしている前提でコントローラを作成します。`
 
 ## コントローラの作成
 ルーティングを設定したら次はコントローラを作成します。
 コントローラはルーティングされてきたリクエストを受け取り、レスポンスを作成する役割を果たします。
 レスポンスとしてHTMLを返す場合はViewに処理を依頼します。
+
+#### **1. BookContollerの作成**
 コントローラの作成にはArtisanの`make:controller`コマンドを使用します。
 
-```php
+```bash
 % php artisan make:controller BookController
+```
+
+以下のようなメッセージが表示されれば成功です。
+
+```bash
 Controller created successfully.
 ```
 
 コントローラは`app/Http/Controllers`ディレクトリに作成されます。
+
+#### **2. BoolCotrollerにindexメソッドとeditメソッドを追加する**
+
 以下のようにindexメソッドとeditメソッドを追加してください。
-`use App/Book`の記述を忘れないようにしてください。
+また、`use App\Book`の記述を忘れないようにしてください。
 
 > app/Http/Controllers/BookController.php
 
@@ -572,20 +681,24 @@ class BookController extends Controller
 }
 ```
 
-コントローラのメソッドでビューを返したい場合、view関数を使用します。
+コントローラのメソッドでビュー（画面表示のプログラムファイル）を返したい場合、view関数を使用します。
+
 view関数は第一引数にビューの名前、第二引数にビューに渡したい値を設定します。
 第二引数は連想配列で渡すようにします。
 compact関数を使うことで簡単に連想配列を渡すことができます。
 例えば、edit関数の`compact('book')`は`['book' => $book]`としているのと同じ意味です。
 
-ルーティングされているメソッドのうち、とりあえずindexメソッドとeditメソッドを用意しました。
-DBからの値取得はEloquentという仕組みを利用しています。
-Eloquentに関しては「Eloquent ORM」の章で説明します。
+ルーティングされているメソッドのうち、まずはindexメソッドとeditメソッドを用意しました。
+
+DBからの値取得はEloquentという仕組みを利用しています。Eloquentに関しては「Eloquent ORM」の章で説明します。
 
 ## ビューの作成
 
 では最後にビューを作成しましょう。
 ビューは`resources/views`ディレクトリに作成します。
+
+#### **1.index.blade.phpの作成**
+
 bookディレクトリを作成し、その中にindex.blade.phpを作成しましょう。
 
 > resources/views/book/index.blade.php
@@ -639,7 +752,9 @@ bookディレクトリを作成し、その中にindex.blade.phpを作成しま�
 
 Laravelではビューの作成にBladeというテンプレートエンジンを用いています。
 Bladeでは{{ $variables }}とすることで、コントローラから受け取った値を画面に出力することができます。
-また@foreach($array as $elem)や@if($bool)と記述することで制御構文を使用することもできます。
+
+また`@foreach($array as $elem)`や`@if($bool)`と記述することで、blade内で制御構文を使用することもできます。
+
 その場合、制御構文の終端は@endforeach、@endifと記述します。
 
 Bladeの詳細に関しては以下のサイトで確認してください。
@@ -649,11 +764,21 @@ https://readouble.com/laravel/5.7/ja/blade.html
 ここまで完成したら、Artisanでサーバーを立ち上げ、http://localhost:8000/book にアクセスしてみましょう。
 一覧画面が表示されるはずです。
 
-ここで一度流れを整理しておきましょう。
-`route:list`コマンドでルーティングを再確認します。
+サーバーの起動方法は、以下を参照してください。
+
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
+
+> 一覧画面
+![index.blade.php](laravel_tutorial/images/index_blade_1.png)
+
+一度サーバーを停止したら、ここで一度流れを整理しておきましょう。
+以下の`route:list`コマンドでルーティングを再確認します。
 
 ```bash
 php artisan route:list
+```
+以下の結果が表示されるされれば成功です。
+```bash
 +--------+-----------+------------------+--------------+---------------------------------------------+------------+
 | Domain | Method    | URI              | Name         | Action                                      | Middleware |
 +--------+-----------+------------------+--------------+---------------------------------------------+------------+
@@ -703,6 +828,8 @@ public function index()
 
 最後にindex.blade.phpでは受け取った値を元に画面を生成し、それが最終的にブラウザに表示されたというわけです。
 
+#### **2.edit.blade.phpの作成**
+
 では、次にedit.blade.phpを作成しましょう。今の流れを意識しながら作成してください。
 > resources/views/book/edit.blade.php
 
@@ -747,12 +874,28 @@ public function index()
 </div>
 ```
 
-これで編集画面が作成できました。書籍一覧のIDをクリックすると、編集画面に遷移します。
+これで編集画面が作成できました。
+
+サーバーを起動して一覧画面に遷移し、書籍一覧のIDをクリックすると、編集画面に遷移することが確認できます。
+
+サーバーの起動方法は、以下を参照してください。
+
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
+
+> 編集画面
+
+![編集画面](laravel_tutorial/images/edit_blade_1.png)
+
+
+上記のように、一覧画面のIDをクリックすると、そのIDに対応する編集画面が上記のように表示されたらOKです。
+
 
 ## ビューの継承
 
 ところで、ヘッダー部分は書籍一覧画面と書籍登録画面で同じですね。
 こういう時、ビューの継承を利用すると効率的に作成することができます。
+
+### 1. layout.blade.phpの作成
 親ビューになるlayout.blade.phpを作成します。共通となる要素のみ記述します。
 
 > views/book/layout.blade.php
@@ -770,13 +913,45 @@ public function index()
 @extends('book/layout')
 @section('content')
 <div class="container ops-main">
-<div class="row">
-    <div class="col-md-12">
-        <h3 class="ops-title">Books</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="ops-title">書籍一覧</h3>
+        </div>
     </div>
-</div>
-<div class="row">
-  <!-- 中略 -->
+    <div class="row">
+        <div class="col-md-11 col-md-offset-1">
+            <table class="table text-center">
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">書籍名</th>
+                    <th class="text-center">著者名</th>
+                    <th class="text-center">価格</th>
+                    <th class="text-center">コメント</th>
+                    <th class="text-center">削除</th>
+                </tr>
+                @foreach($books as $book)
+                <tr>
+                    <td>
+                        <a href="/book/{{ $book->id }}/edit">{{ $book->id }}</a>
+                    </td>
+                    <td>{{ $book->title }}</td>
+                    <td>{{ $book->author }}</td>
+                    <td>{{ $book->price }}</td>
+                    <td>{{ $book->comment }}</td>
+                    <td>
+                        <form action="/book/{{ $book->id }}" method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-xs btn-danger" aria-label="Left Align"><span
+                                    class="glyphicon glyphicon-trash"></span></button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+            <div><a href="/book/create" class="btn btn-default">新規作成</a></div>
+        </div>
+    </div>
 </div>
 @endsection
 ```
@@ -784,7 +959,11 @@ public function index()
 共通要素を消去し、代わりに@extends('book/layout')を記述します。
 これで、layout.blade.phpを継承することを宣言したことになります。
 すると、layoutの@yield('content')部分に@section('content')〜@endsectionで囲った部分が挿入されます。
+
+### 2. layout.blade.phpの修正
 では、edit.blade.phpにもlayoutを継承させましょう。
+
+> resources/views/book/edit.blade.php
 
 ```php
 @extends('book/layout')
@@ -795,262 +974,92 @@ public function index()
             <h2>書籍登録</h2>
         </div>
     </div>
-    <!-- 中略 -->
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            <form action="/book/{{ $book->id }}" method="post">
+                <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="title">書籍名</label>
+                    <input type="text" class="form-control" name="title" value="{{ $book->title }}">
+                </div>
+                <div class="form-group">
+                    <label for="author">著者名</label>
+                    <input type="text" class="form-control" name="author" value="{{ $book->author }}">
+                </div>
+                <div class="form-group">
+                    <label for="price">価格</label>
+                    <input type="text" class="form-control" name="price" value="{{ $book->price }}">
+                </div>
+                <div class="form-group">
+                    <label for="comment">コメント</label>
+                    <input type="text" class="form-control" name="comment" value="{{ $book->comment }}">
+                </div>
+                <button type="submit" class="btn btn-default">登録</button>
+                <a href="/book">戻る</a>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection
 ```
 
 共通のCSSの読み込みや、フッター、ヘッダーなどをlayout.blade.phpに記入することで、継承している全ての画面に反映させることができます。
-次はDB操作の処理を実装していくことになりますが、その前にEloquentについて学びましょう。
+一旦、一覧画面と編集画面が正しく表示されているか、サーバーを起動して確認しておきましょう。
+サーバーの起動方法は、以下を参照してください。
 
-## Eloquent ORM
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
 
-EloquentはLaravelでデータ操作をするための実装です。
-Bookモデルというのを作成したのを思い出してください。
-BookモデルはBookテーブルにマッピングされており、テーブルの登録や取得更新などの操作を持っています。
-Bookモデルとした場合、特に指定しなければ命名規則によりbooksテーブルとマッピングされます。
+次はDB操作の処理を実装していくことになりますが、その前に`Eloquent`について学びましょう。
+Eloquentについては以下のリンクを参照して学習してください。
 
-### レコードの取得
-モデルにマッピングされたテーブルの全てのレコードを取得するにはallメソッドを利用します。
-tinkerを立ち上げてDB操作してみましょう。
-`use \App\Book;`の入力を忘れないようにしてください。
+[Eloquentについて](/web_application/laravel_tutorial/about_Eloquent.md)
 
-```bash
-$ php artisan tinker
-Psy Shell v0.10.4 (PHP 7.2.26 — cli) by Justin Hileman
->>> use \App\Book;
->>> $books = Book::all();
-=> Illuminate\Database\Eloquent\Collection {#4018
-     all: [
-       App\Book {#4019
-         id: 1,
-         title: "PHP Book",
-         author: "山田 太郎",
-         price: 2000,
-         comment: "PHPで一番オススメ",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-04 04:51:18",
-       },
-       App\Book {#4020
-         id: 2,
-         title: "Laravel Book",
-         author: "東京 次郎",
-         price: 3000,
-         comment: "Laravel本で一番わかりやすい",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-04 04:51:18",
-       },
-       App\Book {#4021
-         id: 3,
-         title: "日本一わかりやすいPHPとLaravel",
-         author: "Tech Quest社",
-         price: 3500,
-         comment: "日本で一番売れている本",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-04 04:51:18",
-       },
-     ],
-   }
->>>
-```
+Eloquentを理解したら、次の実装に移りましょう。
 
-countメソッドやforeachを利用することができます。
-
-```bash
->>> $books->count();
-=> 3
-```
-
-### 取得条件の設定
-
-取得レコードに条件を設定する場合はwhereメソッドを使います。
-
-```bash
->>> $expensiveBooks = Book::where('price', '>=', 2500)->get();
-=> Illuminate\Database\Eloquent\Collection {#4007
-     all: [
-       App\Book {#4006
-         id: 2,
-         title: "Laravel Book",
-         author: "東京 次郎",
-         price: 3000,
-         comment: "Laravel本で一番わかりやすい",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-04 04:51:18",
-       },
-       App\Book {#4001
-         id: 3,
-         title: "日本一わかりやすいPHPとLaravel",
-         author: "Tech Quest社",
-         price: 3500,
-         comment: "日本で一番売れている本",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-04 04:51:18",
-       },
-     ],
-   }
->>>
-```
-
-単一行の取得であれば、findメソッドを使うことで効率的に記述できます。
-findメソッドは主キーによる検索を行います。
-
-```bash
->>> $book = $books->find(2);
-=> App\Book {#4020
-     id: 2,
-     title: "Laravel Book",
-     author: "東京 次郎",
-     price: 3000,
-     comment: "Laravel本で一番わかりやすい",
-     created_at: "2020-08-04 04:51:18",
-     updated_at: "2020-08-04 04:51:18",
-   }
->>>
-```
-
-### レコードの登録
-登録するにはモデルのインスタンスを作成し、saveメソッドを呼び出します。
-
-```bash
->>> $newBook = new Book();
-=> App\Book {#4029}
->>> $newBook->title = 'Cake PHP入門';
-=> "Cake PHP入門"
->>> $newBook->author = '神奈川　健太郎';
-=> "神奈川　健太郎"
->>> $newBook->price = 1980;
-=> 1980
->>> $newBook->comment = 'Cake PHPの学習ならこれがおすすめ！'
-=> "Cake PHPの学習ならこれがおすすめ！"
->>> $newBook->save();
-=> true
->>> $cakePhpBook = Book::find(4);
-=> App\Book {#4030
-     id: 4,
-     title: "Cake PHP入門",
-     author: "神奈川　健太郎",
-     price: 1980,
-     comment: "Cake PHPの学習ならこれがおすすめ！",
-     created_at: "2020-08-05 05:29:46",
-     updated_at: "2020-08-05 05:29:46",
-   }
->>>
-```
-
-## レコードの更新
-更新はモデルを取得後、プロパティを変更してsaveメソッドを呼び出します。
-
-```bash
->>> $cakePhpBook;
-=> App\Book {#4030
-     id: 4,
-     title: "Cake PHP入門",
-     author: "神奈川　健太郎",
-     price: 1980,
-     comment: "Cake PHPの学習ならこれがおすすめ！",
-     created_at: "2020-08-05 05:29:46",
-     updated_at: "2020-08-05 05:29:46",
-   }
->>> $cakePhpBook->author = '埼玉 五郎';
-=> "埼玉 五郎"
->>> $cakePhpBook->save();
-=> true
->>> $cakePhpBook = Book::find(4);
-=> App\Book {#4011
-     id: 4,
-     title: "Cake PHP入門",
-     author: "埼玉 五郎",
-     price: 1980,
-     comment: "Cake PHPの学習ならこれがおすすめ！",
-     created_at: "2020-08-05 05:29:46",
-     updated_at: "2020-08-05 05:35:20",
-   }
->>>
-```
-
-複数件の更新も可能です。
-
-```bash
->>> Book::where('price', '>=', 3000)->update(['price' => 3300]);
-=> 2
->>> Book::all();
-=> Illuminate\Database\Eloquent\Collection {#4027
-     all: [
-       App\Book {#4033
-         id: 1,
-         title: "PHP Book",
-         author: "山田 太郎",
-         price: 2000,
-         comment: "PHPで一番オススメ",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-04 04:51:18",
-       },
-       App\Book {#4030
-         id: 2,
-         title: "Laravel Book",
-         author: "東京 次郎",
-         price: 3300,
-         comment: "Laravel本で一番わかりやすい",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-05 05:37:40",
-       },
-       App\Book {#4015
-         id: 3,
-         title: "日本一わかりやすいPHPとLaravel",
-         author: "Tech Quest社",
-         price: 3300,
-         comment: "日本で一番売れている本",
-         created_at: "2020-08-04 04:51:18",
-         updated_at: "2020-08-05 05:37:40",
-       },
-       App\Book {#4045
-         id: 4,
-         title: "Cake PHP入門",
-         author: "埼玉 五郎",
-         price: 1980,
-         comment: "Cake PHPの学習ならこれがおすすめ！",
-         created_at: "2020-08-05 05:29:46",
-         updated_at: "2020-08-05 05:35:20",
-       },
-     ],
-   }
->>>
-```
-
-### レコードの削除
-削除にはdeleteメソッドを使います。
-
-```bash
->>> $cakePhpBook;
-=> App\Book {#4011
-     id: 4,
-     title: "Cake PHP入門",
-     author: "埼玉 五郎",
-     price: 1980,
-     comment: "Cake PHPの学習ならこれがおすすめ！",
-     created_at: "2020-08-05 05:29:46",
-     updated_at: "2020-08-05 05:35:20",
-   }
->>> $cakePhpBook->delete();
-=> true
->>> $cakePhpBook->find(4);
-=> null
->>>
-```
 
 ## CRUDの実装
 
 では残していた更新、登録、削除の機能を実装していきましょう。
 まずは更新を作成します。
 
-### 更新処理
+#### 1. 更新処理の作成
 編集画面はできているので、コントローラにupdateメソッドを定義します。
 
 > app/Http/Controllers/BookController.php
 
 ```php
-public function update(Request $request, $id)
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Http\Controllers\Controller;
+use App\Book;
+
+class BookController extends Controller
+{
+    public function index()
+    {
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
+
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
+    }
+
+    public function edit($id)
+    {
+        // DBよりURIパラメータと同じIDを持つBookの情報を取得
+        $book = Book::findOrFail($id);
+
+        // 取得した値をビュー「book/edit」に渡す
+        return view('book/edit', compact('book'));
+    }
+
+    public function update(BookRequest $request, $id)
     {
         $book = Book::findOrFail($id);
         $book->title = $request->title;
@@ -1058,34 +1067,91 @@ public function update(Request $request, $id)
         $book->price = $request->price;
         $book->comment = $request->comment;
         $book->save();
-
         return redirect("/book");
     }
+}
 ```
 
-pdateメソッドの$idにはURI：`book/{book}`の{book}の部分の値が代入されます。
+updateメソッドの$idにはURI：`book/{book}`の{book}の部分の値が代入されます。
 つまり、http://localhost:8000/book/3 にPUTメソッドでアクセスしたら、updateメソッドが呼び出され、idに3が代入されます。
 requestはクライアントからのリクエスト情報が入っています。
 クライアントが入力した値を取得する場合は`$request->[要素名]`で取得します。
 
-### 削除処理
+#### 2. 削除処理の実装
 書籍一覧画面にすでに削除ボタンは作成しているので、コントローラにdestroyメソッドを定義します。
 
 > app/Http/Controllers/BookController.php
-
 ```php
-public function destroy($id)
-{
-    $book = Book::findOrFail($id);
-    $book->delete();
+<?php
 
-    return redirect("/book");
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Http\Controllers\Controller;
+use App\Book;
+
+class BookController extends Controller
+{
+    public function index()
+    {
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
+
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
+    }
+
+    public function create()
+    {
+        $book = new Book();
+        return view('book/create', compact('book'));
+    }
+
+    public function store(BookRequest $request)
+    {
+        $book = new Book();
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+
+    public function edit($id)
+    {
+        // DBよりURIパラメータと同じIDを持つBookの情報を取得
+        $book = Book::findOrFail($id);
+
+        // 取得した値をビュー「book/edit」に渡す
+        return view('book/edit', compact('book'));
+    }
+
+    public function update(BookRequest $request, $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return redirect("/book");
+    }
 }
 ```
 
-### 登録処理
+#### 3.登録処理の共通化の為、form.blade.phpを作成する
 
-最後に登録処理ですが、画面はedit.blade.phpとほぼ同じなので再利用するようにしましょう。
+最後に登録処理ですが、画面はedit.blade.phpとほぼ同じなので、再利用するようにしましょう。
 まず`views/book`ディレクトリに共通部分を記述するform.blade.phpを作成します。
 edit.blade.phpの@section内部を全て移動させます。
 
@@ -1130,6 +1196,26 @@ edit.blade.phpの@section内部を全て移動させます。
 次に新規登録時と更新時で異なる部分だけ`@if`を使用して分岐させます。
 今回の場合、formタグ部分だけ書き換えればOKです。
 
+#### 4. form.blade.phpに@ifを追加し、formの切り替え分岐を作成する
+
+<form>タグを、新規登録画面と編集画面の場合で、以下のように分岐させる処理を書きます。
+@ifで、変数$targetがstoreならば、新規画面用としてメソッドをpost、
+@elseifにより変数$targetがupdateならば、methodはHTMLの仕様上postとgetしか記載が出来ませんが、
+hiddenタグに_method、value="PUT"を定義すれば、methodをPUTとして送付することが出来ます。
+これは、ルーティング定義を思い出して頂き、編集のルーティングではメソッドがPUTだからとなります。
+
+では、実際に修正しましょう。
+
+```php
+    @if($target == 'store')
+        <form action="/book" method="post">
+    @elseif($target == 'update')
+        <form action="/book/{{ $book->id }}" method="post">
+        <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
+        <input type="hidden" name="_method" value="PUT">
+    @endif
+```
+
 >resources/views/book/form.blade.php
 
 ```php
@@ -1173,6 +1259,8 @@ edit.blade.phpの@section内部を全て移動させます。
 </div>
 ```
 
+#### 5. edit.blade.phpの修正
+
 次はedit.blade.phpを以下のように書き換えます。
 
 > resources/views/book/edit.blade.php
@@ -1185,6 +1273,8 @@ edit.blade.phpの@section内部を全て移動させます。
 
 `@include`を使用して、form.blade.phpを`@section`内に挿入します。
 その際、target変数にupdateという値を渡します。
+
+#### 6. create.blade.phpの作成
 
 では、新しく`views/book/`ディレクトリにcreate.blade.phpを作成しましょう。
 
@@ -1199,16 +1289,40 @@ edit.blade.phpの@section内部を全て移動させます。
 
 targetをstoreに書き換えるだけです。
 これで、新規登録の時と編集の時で、formの内容が分岐される仕組みができます。
-登録時のコントローラが未作成ですのでcreateメソッドとstoreメソッドを追加しましょう。
+登録時のコントローラが未作成ですので`createメソッドとstoreメソッドを追加`しましょう。
+
+#### 7. BookControllerの修正
+
+> app/Http/Controllers/BookController.php
 
 ```php
-public function create()
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Http\Controllers\Controller;
+use App\Book;
+
+class BookController extends Controller
+{
+    public function index()
+    {
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
+
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
+    }
+
+    public function create()
     {
         $book = new Book();
         return view('book/create', compact('book'));
     }
 
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         $book = new Book();
         $book->title = $request->title;
@@ -1216,9 +1330,37 @@ public function create()
         $book->price = $request->price;
         $book->comment = $request->comment;
         $book->save();
+        return redirect("/book");
+    }
+
+    public function edit($id)
+    {
+        // DBよりURIパラメータと同じIDを持つBookの情報を取得
+        $book = Book::findOrFail($id);
+
+        // 取得した値をビュー「book/edit」に渡す
+        return view('book/edit', compact('book'));
+    }
+
+    public function update(BookRequest $request, $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
 
         return redirect("/book");
     }
+}
 ```
 
 create.blade.phpでは$bookを受け取るようになっています。
@@ -1228,7 +1370,62 @@ create.blade.phpでは$bookを受け取るようになっています。
 > 変数を渡さないとUndefined Variableエラーになってしまいます。
 
 以上でCRUD処理全てが実装できました。
-ルーティングと流れを意識しながら色々動かして見てください。
+
+では、ここで、新規登録画面、編集画面、削除機能が実際に動作するかを検証しましょう。
+動作しない場合は何かしらプログラムに問題がありますので、改めて上記チュートリアルと見比べながら解決してください。
+それではサーバーを起動しましょう。サーバーの起動方法は、以下を参照してください。
+
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
+
+#### 8. 新規登録の確認
+
+まずは一覧画面に遷移します。URLは、http://localhost:8000/book ですね。
+
+> 一覧画面
+![一覧画面](laravel_tutorial/images/index_blade_1.png)
+
+画面したの`新規作成ボタン`をクリックしましょう。
+書籍登録の画面に移りましたか？4つの入力項目がありますので、以下の通り入力しましょう。
+
+ - 書籍名　→　7日でわかるPHP入門！
+ - 著者名　→　神奈川 裕次郎
+ - 価格　　→　4000
+ - コメント →　あっという間にPHPが理解できます！
+
+入力すると以下のようになります。
+![一覧画面](laravel_tutorial/images/create_book_1.png)
+
+確認できたら、登録ボタンをクリックしましょう。一覧画面に新たに4つ目の本がID4として、表示されたと思います。
+
+![一覧画面](laravel_tutorial/images/index_blade_2.png)
+
+以上が新規登録の動作確認でした。もしエラーなどになったら、プログラムを見直してみましょう。
+
+#### 9. 編集機能の確認
+
+新規登録で入力した情報がすべて間違っていたため。修正したいと思います。先程のIDが4の箇所をクリックして、編集画面に移ります。以下のように変更しましょう。
+
+ - 書籍名　→　2週間でわかるPHP入門！
+ - 著書名　→　千葉 三郎
+ - 価格　　→　3500
+ - コメント →　たったの2週間でPHPが理解できます！
+
+![編集画面](laravel_tutorial/images/edit_blade_2.png)
+
+上記を確認したら、登録ボタンをクリックしましょう。一覧画面に遷移して、変更内容がID4に表示されたかを確認しましょう。
+
+![一覧画面](laravel_tutorial/images/index_blade_3.png)
+
+以上が編集機能の動作確認でした。もしエラーなどになったら、プログラムを見直してみましょう。
+
+#### 10. 削除機能の確認
+
+最後に、削除機能を確認しましょう、折角登録したましたが、ID4の本の情報を削除しましょう。
+
+一覧画面の右端にゴミ箱のアイコンが表示されていると思います。ID4の箇所のゴミ箱ボタンを押しましょう。
+一覧画面からID4の書籍情報が消えている事が確認できます。
+
+![一覧画面](laravel_tutorial/images/index_blade_4.png)
 
 ## バリデーション
 
@@ -1237,12 +1434,23 @@ create.blade.phpでは$bookを受け取るようになっています。
 いくつか方法がありますが、フォームリクエストを作成する方法を紹介します。
 フォームリクエストを作成するにはArtisanの`make:request`を使用します。
 
+#### 1. BookRequest.phpの作成
+以下のコマンドを実行してください。
+
 ```bash
 php artisan make:request BookRequest
+```
+
+以下のメッセージが表示されれば成功です。
+
+```bash
 Request created successfully.
 ```
 
-`app/Http/Requests`ディレクトリが作成され、そこにBookRequest.phpが作成されます。
+新たに`app/Http/Requests`ディレクトリが作成され、そこにBookRequest.phpが作成されます。
+
+#### 2. BookRequest.phpにバリデーションルールを記載
+
 BookRequest.phpのauthorizeメソッドと、rulesメソッドを以下のように修正します。
 
 > app/Http/Requests/BookRequest.php
@@ -1296,14 +1504,18 @@ class BookRequest extends FormRequest
 バリデーションルールの詳細に関しては公式サイトを参考にしてください。
 https://readouble.com/laravel/5.7/ja/validation.html
 
+
+#### 3. BookController.phpの修正
+
 次にBookController.phpのstoreメソッドとupdateメソッドの引数の型指定をRequestからBookRequestに書き換えます。
 
-
-`use App\Http\Requests\BookRequest;`を忘れないようにしてください。
+また、`use App\Http\Requests\BookRequest;`の記載を忘れないようにしてください。
 
 > app/Http/Contorllers/BookController.php
 
 ```php
+<?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -1313,19 +1525,13 @@ use App\Book;
 
 class BookController extends Controller
 {
-
-　〜中略〜
-
- public function update(BookRequest $request, $id)
+    public function index()
     {
-        $book = Book::findOrFail($id);
-        $book->title = $request->title;
-        $book->author = $request->author;
-        $book->price = $request->price;
-        $book->comment = $request->comment;
-        $book->save();
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
 
-        return redirect("/book");
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
     }
 
     public function create()
@@ -1334,6 +1540,9 @@ class BookController extends Controller
         return view('book/create', compact('book'));
     }
 
+    /**
+     * storeメソッド内部の$requestの型を、BookRequestに変更します
+     */
     public function store(BookRequest $request)
     {
         $book = new Book();
@@ -1342,14 +1551,52 @@ class BookController extends Controller
         $book->price = $request->price;
         $book->comment = $request->comment;
         $book->save();
+        return redirect("/book");
+    }
+
+    public function edit($id)
+    {
+        // DBよりURIパラメータと同じIDを持つBookの情報を取得
+        $book = Book::findOrFail($id);
+
+        // 取得した値をビュー「book/edit」に渡す
+        return view('book/edit', compact('book'));
+    }
+
+    /**
+     * updateメソッド内部の$requestの型を、BookRequestに変更します
+     */
+    public function update(BookRequest $request, $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
 
         return redirect("/book");
     }
+}
 ```
 
 これで書籍名を空にしたまま登録や編集しようとすると、同じ画面にリダイレクトするようになります。
-このままでは何が起きているのかわからないので、エラーメッセージを表示するようにしましょう。
+実際に新規登録画面で、著書名の入力を無しにして登録ボタンをクリックしてください。
+
+しかし、このままでは何が起きているのかわからないので、エラーメッセージを表示するようにしましょう。
+
+#### 4. message.blade.phpの作成
+
 `views/book`ディレクトリにmessage.blade.phpを作成します。
+
+> resources/views/book/message.blade.php
 
 ```php
 <div class="row">
@@ -1367,7 +1614,12 @@ class BookController extends Controller
 </div>
 ```
 
-これをform.blade.phpに挿入します。
+#### 5. form.blade.phpの修正
+
+次に、form.blade.phpに、message.blade.phpを挿入します。
+挿入は、@includeを用いましょう。
+
+> resources/views/book/form.blade.php
 
 ```php
 <div class="container ops-main">
@@ -1378,21 +1630,52 @@ class BookController extends Controller
     </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-1">
-
+            <!-- 以下@includeを追加します  -->
             @include('book/message')
-
-            <!-- 中略 -->
+            @if($target == 'store')
+            <form action="/book" method="post">
+                @elseif($target == 'update')
+                <form action="/book/{{ $book->id }}" method="post">
+                    <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
+                    <input type="hidden" name="_method" value="PUT">
+                    @endif
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <label for="title">書籍名</label>
+                        <input type="text" class="form-control" name="title" value="{{ $book->title }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">著者名</label>
+                        <input type="text" class="form-control" name="author" value="{{ $book->author }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">価格</label>
+                        <input type="text" class="form-control" name="price" value="{{ $book->price }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">コメント</label>
+                        <input type="text" class="form-control" name="comment" value="{{ $book->comment }}">
+                    </div>
+                    <button type="submit" class="btn btn-default">登録</button>
+                    <a href="/book">戻る</a>
+                </form>
         </div>
     </div>
 </div>
 ```
 
 これでエラーメッセージが表示されるようになります。
+実際に動作をさせてみましょう。
+
+新規登録画面に遷移して、書籍名の入力を行わずに、他を入力して登録ボタンをクリックしましょう。
+
+![書籍登録](laravel_tutorial/images/validation_create_book_1.png)
+
+以下のような、「The title field is required.」というエラーメッセージが画面上部に出力されれば成功です。
+
+![書籍登録](laravel_tutorial/images/validation_create_book_2.png)
 
 以上でCRUD機能を持つWebアプリケーションが完成しました。
-
-
-
 
 [戻る](/web_application/index.md) /
 [トップへ](/README.md)
