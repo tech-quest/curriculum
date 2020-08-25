@@ -22,7 +22,6 @@
 1. [Laravel開発環境構築](/php/laravel/00.Laravel開発環境構築(MacOS版)/curriculum.md)
 1. [書籍管理アプリ](laravel_tutorial.md)
 1. [クラス](class.md)
-1. [【準備中です！】オリジナルアプリ作成](origin_app.md)
 
 [トップへ](/README.md)
 
