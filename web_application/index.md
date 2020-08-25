@@ -12,7 +12,7 @@
 1. [Git](git.md)
 1. [HTML/CSS基礎学習](html_css.md)
 1. [お問い合わせフォーム](app_contact_form.md)
-1. [【準備中です！】関数](function.md)
+1. [関数](function.md)
 1. [クラス(オブジェクト)](object.md)
 1. [お問い合わせフォーム2（フルスクラッチ）](/web_application/app_php/app_contact_form_php.md)
 1. [環境構築](build.md)
