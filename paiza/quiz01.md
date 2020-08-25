@@ -11,6 +11,7 @@
   - [D106:割った余り](https://paiza.jp/challenges/269/ready)
 
 - 配列(入力値がスペース区切りの問題)
+  - [まずは動画で理解しましょう！！](https://youtu.be/U5hc6CPPC8o)
   - [D009:西暦の計算](https://paiza.jp/challenges/53/ready)
   - [D110:3つの数字](https://paiza.jp/challenges/277/ready)
   - [D140:N番目の単語](https://paiza.jp/challenges/345/ready)

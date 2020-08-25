@@ -4,7 +4,7 @@
 「⌘ + クリック」(Mac) /「Ctrl + クリック」(Windows)
 
 ## ①DBとSQLを知ろう
-1. [MySQL入門]((https://dotinstall.com/lessons/basic_mysql_v3))
+1. [MySQL入門](https://dotinstall.com/lessons/basic_mysql_v3)
 1. [SQL基礎](https://prog-8.com/languages/sql)
 1. [SQLの解説1](https://www.sejuku.net/blog/74757)
 1. [SQLの解説2](https://employment.en-japan.com/engineerhub/entry/2019/11/05/103000)

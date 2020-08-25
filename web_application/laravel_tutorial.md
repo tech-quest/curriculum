@@ -71,7 +71,7 @@ Laravelプロジェクトを作成したら、次にデータベースの設定�
 MySQLのインストールを作成したら、次はデータベースを作成しましょう。
 こちらも以下のリンクを確認して、データベースを作成しましょう。
 
-[データベースの作成方法](web_application/laravel_tutorial/create_database.md)
+[データベースの作成方法](/web_application/laravel_tutorial/create_database.md)
 
 なお、ここで作成したデータベースを以後のチュートリアルで利用する場合は、
  - データベース名
@@ -357,7 +357,7 @@ mysql> show columns from books;
 
 詳細は以下の開発をご覧ください。
 
-[rollbackについて](/web_application/laravel_tutorial.md) /
+[rollbackについて](/web_application/laravel_tutorial/about_rollback.md) /
 [トップへ](/README.md)
 
 
@@ -1199,9 +1199,12 @@ edit.blade.phpの@section内部を全て移動させます。
 #### 4. form.blade.phpに@ifを追加し、formの切り替え分岐を作成する
 
 <form>タグを、新規登録画面と編集画面の場合で、以下のように分岐させる処理を書きます。
+
 @ifで、変数$targetがstoreならば、新規画面用としてメソッドをpost、
 @elseifにより変数$targetがupdateならば、methodはHTMLの仕様上postとgetしか記載が出来ませんが、
 hiddenタグに_method、value="PUT"を定義すれば、methodをPUTとして送付することが出来ます。
+
+
 これは、ルーティング定義を思い出して頂き、編集のルーティングではメソッドがPUTだからとなります。
 
 では、実際に修正しましょう。
@@ -1393,7 +1396,7 @@ create.blade.phpでは$bookを受け取るようになっています。
  - コメント →　あっという間にPHPが理解できます！
 
 入力すると以下のようになります。
-![一覧画面](laravel_tutorial/images/create_book_1.png)
+![登録画面](laravel_tutorial/images/create_book_1.png)
 
 確認できたら、登録ボタンをクリックしましょう。一覧画面に新たに4つ目の本がID4として、表示されたと思います。
 
