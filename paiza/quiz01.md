@@ -1,11 +1,13 @@
 # 1.簡単な計算問題を通してコードを書くことに慣れる【D問題10問(初級)】
 ## 【目標】10問中3問　満点を目指そう！
 - 入力値が1つの問題
+  - [まずは動画で理解しましょう！！](https://www.youtube.com/watch?v=Uv9kqowYXWo)([参考動画](https://youtu.be/hOcEu-G8nlk))
   - [D031:分から秒へ](https://paiza.jp/challenges/105/ready)
   - [D029:サイコロの裏面](https://paiza.jp/challenges/101/ready)
-  - [D055:ワインのキャッチコピー](https://paiza.jp/challenges/156/ready)
+  - [D055:ワインのキャッチコピー](https://paiza.jp/challenges/156/ready)([参考動画](https://youtu.be/rgIqNfZ0Os8))
 
 - 入力値が複数行の問題
+  - [まずは動画で理解しましょう！！](https://www.youtube.com/watch?v=BJLsCrkaoIk)
   - [D156:密度の計算](https://paiza.jp/challenges/380/ready)
   - [D047:メダリストの表示](https://paiza.jp/challenges/140/ready)
   - [D106:割った余り](https://paiza.jp/challenges/269/ready)
