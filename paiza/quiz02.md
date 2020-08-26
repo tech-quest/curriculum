@@ -24,5 +24,7 @@
     - パターン2：for文を使って解く
     - パターン3：for文と配列を使って解く
 
+  ※15分チャレンジしてもわからなければ[解答例](https://docs.google.com/document/d/1NyOTy3qko_g_7yphwlnVP7c7k_64OUPHLarHbqwr_50/edit#)を見て、解き方を覚えていきましょう！
+
   [戻る](index.md) /
   [トップへ](/README.md)
