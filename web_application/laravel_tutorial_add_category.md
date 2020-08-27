@@ -66,17 +66,21 @@ Laravelでこの1対多のリレーションシップの実現は、`Eloquent`�
 
 それでは、上記のPHP/Java/Pythonのようなカテゴリ自体を管理するテーブルと、モデル、コントローラーをそれぞれ順番に作成していきます。
 
-## カテゴリテーブルの作成
+#### 1.マイグレーションファイルの作成
 
 カテゴリテーブル(categories)のテーブルを作成するマイグレーションファイルを作成します。
+
 以下のコマンドを実行してください。
 `テーブル名は必ず複数形`とすることを忘れないようにしましょう！
 
 ```bash
-　・ php artisan make:migration create_categories_table --create=categories
+php artisan make:migration create_categories_table --create=categories
+```
 
 以下のメッセージが出力されれば成功です。
-    Created Migration: 2020_08_17_070604_create_categories_table
+
+```bash
+Created Migration: 2020_08_17_070604_create_categories_table
 ```
 
 以下のファイルが作成されます。
@@ -117,6 +121,8 @@ class CreateCategoriesTable extends Migration
 }
 ```
 
+#### 2. テーブル項目の決定と、テーブル作成
+
 それではここでカテゴリテーブルにはどんな項目を保持するかを考えてみます。
 先程のプログラムの書籍達に、PHP/Java/Python、のようにカテゴリの名前をデータとして持てば良いと判断出来ますので、2020_08_17_070604_create_categories_table.phpのupメソッドを以下のように修正します。
 
@@ -132,28 +138,47 @@ class CreateCategoriesTable extends Migration
     }
 ```
 
-nameという項目名として新しく追加し、型をstringとします。
+nameという項目名を追加し、型をstringとします。
 これで、カテゴリ名を保存するテーブルを作成する準備が整いました。
 以下のコマンドを実行し、テーブルを作成しましょう。
 
 ```bash
-　・ php artisan migrate
+php artisan migrate
+```
 
 以下のメッセージが出力されれば成功です。
+
+```bash
 Migrating: 2020_08_17_070604_create_categories_table
 Migrated:  2020_08_17_070604_create_categories_table (0.09 seconds)
 ```
 
 mysqlにも接続して、テーブル名「categories」が作成されたことを確認します。
+まずはMySQLに接続しましょう。接続方法は以下リンクの`3. MySQLへのログイン`を参照してください。
+
+[MySQLのインストール手順](/web_application/laravel_tutorial/install_mysql.md)
+
+MySQLへ接続したら、以下のコマンドを実行します。データベースを選択します。
+書籍管理アプリでは、データベースはsampleを利用しているのでしたね。
+
+```sql
+mysql> use sample;
+```
+
+次に、sampleデータベースに存在しているテーブルの一覧を表示するコマンドを実行しましょう。以下のコマンドを実行します。
 
 ```sql
 mysql> show tables;
+```
 
+以下の通り、categoriesテーブルが作成された事が確認できます。
+
+```sql
 +------------------+
 | Tables_in_sample |
 +------------------+
 | books            |
-| categories      |
+| categories       |
 | failed_jobs      |
 | migrations       |
 | users            |
@@ -161,10 +186,17 @@ mysql> show tables;
 5 rows in set (0.00 sec)
 ```
 
-以下コマンドで、カテゴリテーブルの項目にid、name、created_at、updated_atの項目が作成されているかを確認します。
+作成されているのが確認できましたか？
+
+次に以下のコマンドで、カテゴリテーブルの項目にid、name、created_at、updated_atの項目が作成されているかを確認します。
 
 ```sql
 mysql> show columns from categories;
+```
+
+以下のようにターミナルに表示されます。テーブルの項目はきちんと作成されたでしょうか？
+
+```sql
 +------------+---------------------+------+-----+---------+----------------+
 | Field      | Type                | Null | Key | Default | Extra          |
 +------------+---------------------+------+-----+---------+----------------+
@@ -178,18 +210,21 @@ mysql> show columns from categories;
 以上が、カテゴリテーブル（categories）を作成する手順です。
 
 
-### シーディング（テストデータ）の作成
+## シーディング（テストデータ）の作成
 
 作成したカテゴリテーブルに、テストデータを登録しましょう。
 
-### シーディングファイルの作成
+#### 1. シーディングファイルの作成
 以下のArtisanのコマンドを実行します。
 
 ```bash
-  ・ php artisan make:seeder CategoriesTableSeeder
+php artisan make:seeder CategoriesTableSeeder
+```
 
-  以下のメッセージが出力されれば成功です。
-  Seeder created successfully.
+以下のメッセージが出力されれば成功です。
+
+```sql
+Seeder created successfully.
 ```
 
 `database/seeds`ディレクトリにCategoriesTableSeeder.phpが作成されます。
@@ -224,6 +259,7 @@ categoriesテーブルに、以下のレコードを登録します。
 |3|Java|現在時刻|現在時刻|
 
 上記レコードを登録するため、シーダーファイルを以下の通りに修正します。
+runメソッド内部を修正します。
 
 > database/seeds/CategoriesTableSeeder.php
 
@@ -282,26 +318,33 @@ public function run()
 }
 ```
 
-### シーディングの実行
+#### 2. シーディングの実行
 シーディングを実行するにはArtisanの`db:seed`コマンドを実行します。
 
 ```bash
-  php artisan db:seed
+php artisan db:seed
+```
 
-  以下のメッセージが表示されたら成功です。
+以下のメッセージが表示されたら成功です。
 
-  Seeding: BooksTableSeeder
-  Seeded:  BooksTableSeeder (0.19 seconds)
-  Seeding: CategoriesTableSeeder
-  Seeded:  CategoriesTableSeeder (0.07 seconds)
-  Database seeding completed successfully.
+```sql
+Seeding: BooksTableSeeder
+Seeded:  BooksTableSeeder (0.19 seconds)
+Seeding: CategoriesTableSeeder
+Seeded:  CategoriesTableSeeder (0.07 seconds)
+Database seeding completed successfully.
 ```
 
 実行が完了したら、SQLでテーブルデータが保存をされたかを確認しましょう。
-まず、categoriesテーブルを確認します。select文を実行し、以下のようにデータが格納されていれば成功です。
+まず、categoriesテーブルを確認します。select文を実行します。
 
 ```sql
 select * from categories;
+```
+
+以下のようにデータが格納されていれば成功です。
+
+```sql
 +----+--------+---------------------+---------------------+
 | id | name   | created_at          | updated_at          |
 +----+--------+---------------------+---------------------+
@@ -312,10 +355,15 @@ select * from categories;
 3 rows in set (0.00 sec)
 ```
 
-booksテーブルも確認しましょう、select文を実行し、以下のようにデータが格納されていれば成功です。
+booksテーブルも確認しましょう、select文を実行します。
 
 ```sql
 mysql> select * from books;
+```
+
+以下のようにデータが格納されていれば成功です。
+
+```sql
 +----+------------------------------------------+---------------+-------+---------------------------------------+---------------------+---------------------+
 | id | title                                    | author        | price | comment                               | created_at          | updated_at          |
 +----+------------------------------------------+---------------+-------+---------------------------------------+---------------------+---------------------+
@@ -328,16 +376,22 @@ mysql> select * from books;
 
 以上で、シーディングによるデータに準備が整いました。
 
-## カテゴリモデルの作成
+## カテゴリモデル
 
 次に、カテゴリモデル（Category）を作成しましょう。
+
+#### 1. カテゴリモデルの作成
+
 以下のコマンドを実行します。カテゴリ名は`単数形`です！
 
 ```bash
-  ・  php artisan make:model Category
+php artisan make:model Category
+```
 
-  以下のメッセージが出力されれば成功です。
-  Model created successfully.
+以下のメッセージが出力されれば成功です。
+
+```bash
+Model created successfully.
 ```
 
 以下ディレクトリに、Category.phpが作成されたことを確認します。
@@ -363,6 +417,8 @@ class Category extends Model
 `「カテゴリ名がPythonの書籍を、すべて検索したい」`
 
 といった機能を実現出来ます。
+
+#### 2. リレーション定義の追加
 
 それでは1対多を実現するコードを書いていきましょう。
 
@@ -403,17 +459,22 @@ class Category extends Model
 ## カテゴリコントローラーの作成
 
 カテゴリのテーブルとモデルの準備が整いましたので、次はコントローラーの作成に移ります。
+
+#### 1. コントローラーの作成
+
 以下のコマンドで、コントローラーを作成してください。
 
 ```bash
-  ・　php artisan make:controller CategoryController
-
-  以下のメッセージが表示されたら成功です。
-
-  Controller created successfully.
+php artisan make:controller CategoryController
 ```
 
-以下にカテゴリコントローラーが作成されたかを確認します。
+以下のメッセージが表示されたら成功です。
+
+```bash
+Controller created successfully.
+```
+
+以下のディレクトリ配下に、カテゴリコントローラーが作成されたかを確認します。
 
   > app/Http/Controllers/CategoryController.php
 
@@ -434,7 +495,11 @@ class CategoryController extends Controller
 
 ## ルーティングの設定
 
-カテゴリを画面から登録、編集、削除が出来るようにするためには、先程作成したコントローラーで、CRUDをコントロールしますが、ルーティングの設定も必要になります。Bookと同様に以下のようにweb.phpにルーティング定義を追加します。
+カテゴリを画面から登録、編集、削除が出来るようにするためには、先程作成したコントローラーで、CRUDをコントロールしますが、ルーティングの設定も必要になります。
+
+#### 1. ルーティング定義の追加
+
+以下のようにweb.phpにルーティング定義を追加します。
 
 > routes/web.php
 
@@ -448,7 +513,11 @@ class CategoryController extends Controller
 
 ```bash
 php artisan route:list
+```
 
+以下のように表示がされたかを確認しましょう。
+
+```bash
 +--------+-----------+--------------------------+------------------+-------------------------------------------------+------------+
 | Domain | Method    | URI                      | Name             | Action                                          | Middleware |
 +--------+-----------+--------------------------+------------------+-------------------------------------------------+------------+
@@ -473,18 +542,22 @@ php artisan route:list
 ```
 
 categoryのルーティング設定が追加されたことを確認します。
-ルーティングの詳細は、「Laravel入門　使い方チュートリアル」を参照下さい。
+ルーティングの詳細は以下のリンクを参照下さい。
+
+[ルーティングについて](/web_application/laravel_tutorial/about_routes.md)
 
 ## カテゴリ一覧の作成
 それでは、再びカテゴリコントローラー(CategoryController.php)に戻ります。
-まずは、カテゴリの一覧画面を作成し、シーディングで登録したデータが、画面上で表示されるかを確認します。
+まずはカテゴリの一覧画面を作成し、シーディングで登録したデータが、画面上で表示されるかを確認します。
 
-まず、CategoryController.phpを以下のように作成します。
+#### 1. CategoryController.phpの作成
+
+まず、CategoryController.phpにindexメソッドを追加して、以下の処理を作成します。
 
  1. カテゴリデータを、categoriesテーブルから取得
  1. 取得したデータを、category/index.blade.phpに、カテゴリデータを渡し、表示する
 
-という処理を実装します。
+という処理を実装します。それでは実際に作成しましょう。
 
 > app/Http/Controllers/CategoryController.php
 
@@ -511,12 +584,12 @@ class CategoryController extends Controller
 
 作成が完了したら、viewの作成に移ります。
 
-### カテゴリ一覧ビューの作成
+#### 2.カテゴリ一覧ビューの作成
 
 それではindex.blade.phpを作成していきますが、書籍管理のBookを参考にし、各画面で共通的に利用するbladeファイルもこのタイミングで作成します。まずは、layout.blade.phpから作成しましょう。
 
-1. resources/viewsフォルダの下に、フォルダ名：category、を作成します。
-1. 作成した後、categoryフォルダの中に、ファイル：layout.blade.phpを、を作成します。以下の通りに作成してください。
+1. resources/viewsフォルダの下に、`フォルダ名：category`、を作成します。
+1. 作成した後、categoryフォルダの中に、`ファイル：layout.blade.php`、を作成します。以下の通りに作成してください。
 
 > resources/views/category/layout.blade.php
 
@@ -575,12 +648,14 @@ class CategoryController extends Controller
 
 これで、カテゴリ一覧を表示させる準備が出来ました。
 ここでサーバーを起動して、カテゴリ一覧が表示されるかを確認します。
-以下のコマンドを実行し、サーバーを起動します。
+以下のコマンドを実行し、サーバーを起動します。起動手順は以下を参照しましょう。
 
-```bash
-php artisan serve --host=localhost --port=8000
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
+
 
 以下が表示されれば成功です。
+
+```bash
 Laravel development server started: http://localhost:8000
 ```
 
@@ -588,11 +663,16 @@ Laravel development server started: http://localhost:8000
 
 http://localhost:8000/category
 
-上記URLにアクセスすると、シーディングで登録したカテゴリのデータが一覧として表示された事がわかるはずです。
+上記URLにアクセスすると、シーディングで登録したカテゴリのデータが一覧として表示された事がわかるはずです。以下の通りに表示されていればOKです。
+
+> カテゴリ一覧画面
+![カテゴリ一覧](laravel_tutorial/images/add_category/category_after_seeding_1.png)
+
+
 サーバーは、利用が終わったら停止しましょう。
 ターミナル上で、「Control + C」を押せばサーバーは停止します。
 
-### カテゴリの新規登録機能の作成
+#### 3. カテゴリの新規登録機能の作成
 
 カテゴリを新たに登録するための機能を作成しましょう。
 まずは、CategoryControllerに、
@@ -642,6 +722,7 @@ class CategoryController extends Controller
 ```
 
 新規登録画面を作成します、書籍管理と同じく、新規画面と後ほど作成する編集画面はほぼ同じ画面構成となりますので、予め両方で利用ができるようにbladeファイルを作成しましょう。
+
 `form.blade.php`をcategoryフォルダの配下に作成します。
 
 > resources/views/category/form.blade.php
@@ -689,12 +770,11 @@ create.blade.phpの@includeで、form.blade.phpを読み込みます。
 
 これで、カテゴリ新規登録画面の完成です。
 
-サーバーを起動して、新規登録が動作するかを確認しましょう。
-以下のコマンドを実行し、サーバーを起動します。
+サーバーを起動して、動作を確認しましょう。起動手順は以下を確認してください。
+
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
 
 ```bash
-php artisan serve --host=localhost --port=8000
-
 以下が表示されれば成功です。
 Laravel development server started: http://localhost:8000
 ```
@@ -706,9 +786,13 @@ http://localhost:8000/category
 上記URLにアクセスすると、カテゴリのデータが一覧表示されます。
 画面下部に「新規登録」ボタンがありますので、クリックしましょう。新規登録画面に遷移します。
 
+![カテゴリ登録画面](laravel_tutorial/images/add_category/category_create_1.png)
+
 カテゴリ名に「C言語」と入力して、「登録」ボタンをクリックしましょう。
 
 登録が成功すると、一覧画面に遷移し、4つ目のカテゴリとして、「C言語」が登録出来た事が確認できると思います。
+
+![カテゴリ一覧画面](laravel_tutorial/images/add_category/category_index_afterClanguage.png)
 
 サーバーは、利用が終わったら停止しましょう。
 ターミナル上で、「Control + C」を押せばサーバーは停止します。
@@ -782,8 +866,9 @@ class CategoryController extends Controller
 }
 ```
 
-次に編集画面を作成します。編集画面の入力は、新規登録画面と共通していることは先程案内した通りですので、編集画面もform.blade.phpを読み込むようにします。
-resource/categoryの配下に「edit.blade.php」を作成しましょう。
+次に編集画面を作成します。編集画面の入力は、新規登録画面と共通していることは先程案内した通りですので、編集画面もform.blade.phpを読み込むようにします
+
+resource/categoryの配下に`edit.blade.php`を作成しましょう。
 
 >　resources/views/category/edit.blade.php
 ```php
@@ -793,15 +878,13 @@ resource/categoryの配下に「edit.blade.php」を作成しましょう。
 @endsection
 ```
 
-これで編集画面の作成は完了です（新規登録画面で多めに作っておいてよかったですね！）
-では、再びサーバーを起動しましょう。
+これで編集画面の作成は完了です（新規登録画面で予め作っておいてよかったですね！）
+では、再びサーバーを起動しましょう。手順は以下を参照してください（そろそろコマンドを覚えてきたでしょうか？）
 
-以下のコマンドを実行し、サーバーを起動します。
-
-```bash
-php artisan serve --host=localhost --port=8000
+[laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
 
 以下が表示されれば成功です。
+```bash
 Laravel development server started: http://localhost:8000
 ```
 
@@ -814,7 +897,11 @@ http://localhost:8000/category
 
 編集画面に遷移します。カテゴリ名を「C言語」から「C++言語」へと名称を変更して、「登録」ボタンをクリックしましょう。
 
+![カテゴリ編集画面](laravel_tutorial/images/add_category/category_edit_CPlus_language_1.png)
+
 登録が成功すると、一覧画面に遷移し、カテゴリの名称が、「C++言語」へと変更が出来た事が確認できると思います。
+
+![カテゴリ一覧画面](laravel_tutorial/images/add_category/category_index_afterCPlus_language_1.png)
 
 サーバーは、利用が終わったら停止しましょう。
 ターミナル上で、「Control + C」を押せばサーバーは停止します。
@@ -822,7 +909,7 @@ http://localhost:8000/category
 以上で、変更画面の実装が完了しました。
 
 
-### カテゴリの削除機能
+## カテゴリの削除機能
 
 カテゴリの削除機能を作成しましょう。
 カテゴリの一覧画面にすでに削除ボタンは作成しているので、CategoryControllerにdestroyメソッドを定義します。
@@ -839,32 +926,40 @@ public function destroy($id)
 }
 ```
 
-では再びサーバーを起動しましょう。サーバーの起動コマンドは新規と編集の確認で行った時と同様ですので、ぜひ覚えてくださいね！
-
-起動したら、カテゴリの一覧画面に遷移しましょう。
+では再びサーバーを起動しましょう。サーバーの起動コマンドは新規と編集の確認で行った時と同様ですので、ぜひ覚えてくださいね！では起動したら以下のURLにアクセスしましょう！
 
 http://localhost:8000/category
 
 上記URLにアクセスすると、カテゴリのデータが一覧表示されます。
-各カテゴリの最後にゴミ箱のマークがあると思います。そのボタンを押すと、そのカテゴリは削除されますので、先程変更した「C++言語」を削除してみましょう。
-「C++言語」の削除ボタンをクリックします。
+各カテゴリの最後にゴミ箱のマークがあると思います。そのボタンを押すと、そのカテゴリは削除されますので、先程変更した「C++言語」横の削除のゴミ箱ボタンをクリックしてみましょう。
 
-削除が成功すると、再びカテゴリ一覧へと戻り、「C++言語」が削除されていると思います。
+![カテゴリ一覧画面](laravel_tutorial/images/add_category/category_index_after_delete_1.png)
+
+
+削除が成功すると、再びカテゴリ一覧へと戻り「C++言語」が削除されていると思います。
 
 以上で、削除処理の実装が完了しました。
 
-### バリデーション
+## バリデーション
 
 最後にバリデーション（入力内容のチェック）を追加しましょう。
 カテゴリを登録・編集を行う時に、カテゴリ名の記入が無い場合はエラーとするようにしていきます。
+
+#### 1. CategoryRequest.phpの作成
+
 フォームリクエストを作成は、書籍と同じくArtisanの`make:request`を使用します。
 
 ```bash
 php artisan make:request CategoryRequest
+```
 
 以下のように表示されたら成功です。
+
+```bash
 Request created successfully.
 ```
+
+#### 2. バリデーションルールの追加
 
 `app/Http/Requests`ディレクトリにCategoryRequest.phpが作成されます。
 CategoryRequest.phpのauthorizeメソッドと、rulesメソッドを以下のように修正します。
@@ -920,9 +1015,11 @@ class CategoryRequest extends FormRequest
 バリデーションルールの詳細に関しては公式サイトを参考にしてください。
 https://readouble.com/laravel/5.7/ja/validation.html
 
+#### 3. 型指定の変更
+
 次に`CategoryController.php`のstoreメソッドとupdateメソッドの引数の型指定をRequestからCategoryRequestに書き換えます。
 
-また、use句に、`use App\Http\Requests\CategoryRequest;`を忘れないように定義してください。
+またuse句に、`use App\Http\Requests\CategoryRequest;`を忘れないように定義してください。
 
 > app/Http/Controllers/CategoryController.php
 ```php
@@ -992,9 +1089,11 @@ class CategoryController extends Controller
 }
 ```
 
+#### 4. エラーメッセージ表示ビューの追加
+
 これでカテゴリ名を空にしたまま登録や編集しようとすると、エラーとなるのですが、同じ画面にリダイレクトするようになります。
 このままでは何が起きているのかわからないので、エラーメッセージを表示するようにしましょう。
-`views/category`ディレクトリにmessage.blade.phpを作成します。
+`views/category`ディレクトリに`message.blade.php`を作成します。
 
 > resources/views/category/message.blade.php
 
@@ -1018,7 +1117,7 @@ class CategoryController extends Controller
 
 > resources/views/category/form.blade.php
 
-```php
+```bash
 <div class="container ops-main">
     <div class="row">
         <div class="col-md-6">
@@ -1047,8 +1146,11 @@ class CategoryController extends Controller
 </div>
 ```
 
-これでエラーメッセージが表示されるようになりますので、サーバーを起動して確認しましょう。
+これでエラーメッセージが表示されるようになりますので、サーバーを起動して確認しましょう。サーバー起動手順は今までと同じなので、ぜひご自身で確認して実行しましょう！
+
 新規画面で、カテゴリ名に名前を入力せずに登録ボタンを押すと、エラーメッセージが表示される事が確認できると思います。
+
+![カテゴリ登録画面](laravel_tutorial/images/add_category/category_error_mesage_1.png)
 
 以上で、カテゴリのCRUDが完成しました。
 
@@ -1060,10 +1162,10 @@ class CategoryController extends Controller
 
 例えば、
 
-    ・ 書籍名：「PHP Book」のカテゴリはPHP
-    ・ 書籍名:「日本一わかりやすいPHPとLaravel」のカテゴリはPHP
+ - 書籍名:「PHP Book」のカテゴリは、`PHP`
+ - 書籍名:「日本一わかりやすいPHPとLaravel」のカテゴリは、`PHP`
 
-のように、書籍には必ずカテゴリを選ぶ（保持）するようにします。
+のように、書籍を登録するときは、必ずカテゴリを選ぶ（保持）するようにします。
 つまり、書籍（booksテーブル）に、カテゴリのデータを保持するようにします。
 まず、booksテーブルの構造を思い出してみましょう。
 
@@ -1086,15 +1188,21 @@ booksテーブルは書籍の情報を格納するテーブルでした。この
 |2|Python|現在時刻|現在時刻|
 |3|Java|現在時刻|現在時刻|
 
-現在のbooksテーブルの書籍の3つすべてが`カテゴリ：PHP`となります。
-booksテーブルにカテゴリを保持する上で、categoriesテーブルには、
+現在のbooksテーブルの書籍の3つすべてがPHPの書籍ですから、カテゴリとして`PHP`を設定したいと思います。
 
-    ・id
-    ・name
+「書籍XXXXのカテゴリはPHPである」という情報を保存する必要があります。今回はbooksテーブルに保存することにしたいと思います。
+
+booksテーブルにカテゴリの情報を保持する上で、categoriesテーブルには、
+
+ - id
+ - name
+
 の2つの項目がありますが、どちらをbooksテーブルに持てばいいでしょうか？
 
-正解は、`id`です。2つのテーブル間の関係性を紐付けるときは、idを使うようにしましょう。booksテーブルにcategory_idを追加するイメージは以下の通りです。
-idの後ろに付与してみましょう。
+正解は、`id`です。2つのテーブル間の関係性を紐付けるときは、参照先のテーブルの主キーとなる`id`を使うようにしましょう。
+
+booksテーブルにcategory_idを追加するイメージは以下の通りです。
+idの後ろに付与したイメージは以下の通りです。
 
 **booksテーブル**
 
@@ -1106,19 +1214,22 @@ idの後ろに付与してみましょう。
 
 もし、カテゴリ名がPHPから仮にPHP5.6などのように変更されたとしても、booksテーブルではcategory_idを持っていますので、カテゴリ名の名称の変更の影響をbooksテーブルが受けないなどのメリットがあります。
 
-なお、このようにbooksテーブルはcategory_idという`外部キー`を持つということになりますので、ぜひ覚えてください。
+なお、このようにbooksテーブルはcategory_idという`外部キー`を持つということになりますのでぜひ覚えてください。
 外部キーの命名は、参照先のテーブルを単数形とした名称とする事も覚えてください。
 
 それでは実際にbooksテーブルに、category_idの外部キーを追加してみましょう。
 
-*** booksテーブルにcategory_idを追加
+#### 1.booksテーブルにcategory_idを追加
 
 テーブルに項目を追加するときは、以下のコマンドを実行します。
 
 ```bash
 php artisan make:migration add_category_id_books_table
+```
 
 以下のメッセージが出力されれば成功です。
+
+```bash
 Created Migration: 2020_08_19_022930_add_category_id_books_table
 ```
 
@@ -1160,6 +1271,10 @@ class AddCategoryIdBooksTable extends Migration
 AddCategoryIdBooksTableクラスというphpファイルが作成されました。
 中身を確認すると、まだupメソッドとdownメソッドの中身がありませんので、こちらに具体的にcategory_idを追加するプログラムを記載していきます。
 
+#### 2. 項目「category_id」を追加する記載を追加する。
+
+上記で作成されたマイグレーションファイルの`upメソッドとdownメソッド`に、以下の記載を追加します。
+
 > database/migrations/2020_08_19_022930_add_category_id_books_table.php
 
 ```php
@@ -1197,7 +1312,7 @@ class AddCategoryIdBooksTable extends Migration
 }
 ```
 
-upメソッドの注目は、
+upメソッドで注目して頂きたい所は、
 ```php
 $table->BigInteger('category_id')->after('id');
 ```
@@ -1205,4 +1320,4 @@ $table->BigInteger('category_id')->after('id');
 
 次の`after('id')`は、booksテーブルのidのすぐ後ろに、category_idを追加するという動作となります。
 
-一方のdownメソッドは、category_idを削除する場合の定義となります。
+一方のdownメソッドは、category_idをbooksテーブルから削除する場合の定義となります。

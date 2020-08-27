@@ -1,5 +1,65 @@
 # Laravel入門　使い方チュートリアル
-## Laravelのインストール
+
+## 目次
+[1. Laravelのインストール](#1.-Laravelのインストール)
+
+[2. Laravelプロジェクトのディレクトリ構成について](#2.-Laravelプロジェクトのディレクトリ構成)
+
+[3.データベース設定](#3.-データベース設定)
+ - [1.MySQLインストール](#1.インストール)
+ - [2.データベースの作成方法](#2.データベースの作成方法)
+ - [3.接続設定](#3.接続設定)
+
+[4. マイグレーション](#4.-マイグレーション)
+ - [1.マイグレーションファイルの作成](#1.-マイグレーションファイルの作成)
+ - [2.upメソッドの修正](#2.-upメソッドの修正)
+ - [3.マイグレーションの実行](#3.-マイグレーションの実行)
+
+[5. モデルの作成](#5.-モデルの作成)
+ - [1.モデルの作成](#1.-モデルの作成)
+ - [2.モデルの命名規則](#2.-モデルの命名規則)
+
+[6. シーディング](#6.-シーディング)
+ - [1.シーダーファイルの作成](#1.-シーダーファイルの作成)
+ - [2.テストデータの登録](#2.-テストデータの登録)
+ - [3.DatabaseSeeder.phpの修正](#3.-DatabaseSeeder.phpの修正)
+
+[7. ルーティング](#7.-ルーティング)
+ - [1.ルーティングの設定](#1.-ルーティングの設定)
+
+[8. コントローラの作成](#8.-コントローラの作成)
+ - [1. BookContollerの作成](#1.-BookContollerの作成)
+ - [2. BoolCotrollerにindexメソッドとeditメソッドを追加する](#2.-BoolCotrollerにindexメソッドとeditメソッドを追加する)
+
+[9. ビューの作成](#9.-ビューの作成)
+- [1.書籍一覧画面：index.blade.phpの作成](#1.-書籍一覧画面：index.blade.phpの作成)
+- [2.書籍編集画面：edit.blade.phpの作成](#2.-書籍編集画面：edit.blade.phpの作成)
+
+[10. ビューの継承](#10.-ビューの継承)
+- [1. 親ビュー：layout.blade.phpの作成](#1.-親ビュー：layout.blade.phpの作成)
+- [2. index.blade.phpの修正](#2.-index.blade.phpの修正)
+- [3. layout.blade.phpの修正](#3.-layout.blade.phpの修正)
+
+[11. CRUDの実装](#11.-CRUDの実装)
+- [1. 更新処理の作成](#1.-更新処理の作成)
+- [2. 削除処理の実装](#2.-削除処理の実装)
+- [3. 登録処理の共通化の為、form.blade.phpを作成する](#3.-登録処理の共通化の為、form.blade.phpを作成する)
+- [4. form.blade.phpに@ifを追加し、formの切り替え分岐を作成する](#4.-form.blade.phpに@ifを追加し、formの切り替え分岐を作成する)
+- [5. edit.blade.phpの修正](#5.-edit.blade.phpの修正)
+- [6. 書籍登録画面：create.blade.phpの作成](#6.-書籍登録画面：create.blade.phpの作成)
+- [7. BookControllerの修正](#7.-BookControllerの修正)
+- [8. 新規登録の動作確認](#8.-新規登録の動作確認)
+- [9. 編集機能の動作確認](#9.-編集機能の動作確認)
+- [10. 削除機能の動作確認](#10.-削除機能の動作確認)
+
+[12. バリデーション](#12.-バリデーション)
+- [1. BookRequest.phpの作成](#1.-BookRequest.phpの作成)
+- [2. BookRequest.phpにバリデーションルールを記載](#2.-BookRequest.phpにバリデーションルールを記載)
+- [3. BookController.phpの修正](#3.-BookController.phpの修正)
+- [4. message.blade.phpの作成](#4.-message.blade.phpの作成)
+- [5. form.blade.phpの修正](#5.-form.blade.phpの修正)
+
+## 1. Laravelのインストール
 
 Laravelのインストールには様々な方法がありますが、ここではComposerを使用します。
 create-projectコマンドを使用することで、インストールと同時にプロジェクトを作成することができます。
@@ -23,7 +83,7 @@ cdコマンドを実行します。
 
 以降は`sampleディレクトリで作業をしている前提でお話ししていきます`！
 
-## Laravelプロジェクトのディレクトリ構成
+## 2. Laravelプロジェクトのディレクトリ構成
 
 Laravelプロジェクトを作成すると、以下のようなディレクトリを構成します。
 ```bash
@@ -48,7 +108,7 @@ Laravelプロジェクトを作成すると、以下のようなディレクト�
 
 [Laravelの補足情報](/web_application/laravel_tutorial/about_laravel_info.md)
 
-## データベース設定
+## 3. データベース設定
 
 Laravelプロジェクトを作成したら、次にデータベースの設定をします。
 最初は以下の作業が必要になります。
@@ -110,7 +170,7 @@ DB_PASSWORD=samplequest
 php artisan config:cache
 ```
 
-## マイグレーション
+## 4. マイグレーション
 
 マイグレーションとは、テーブルの作成や編集などをSQLによって行うのではなく、PHPのソースで管理する仕組みです。
 次の手順で行います。
@@ -296,7 +356,7 @@ mysql>
 mysqlへログインした後、まずは利用するデータベースに接続します。以下コマンドを実行して下さい。
 
 ```sql
-mysql> use sample
+mysql> use sample;
 ```
 
 `use sample`は、データベースsampleを利用するよ！というコマンドです、今回は`sample`という名前のデータベースを
@@ -361,7 +421,7 @@ mysql> show columns from books;
 [トップへ](/README.md)
 
 
-## モデルの作成
+## 5. モデルの作成
 
 モデルはテーブルとマッピングされたオブジェクトです。
 DB操作を行うためのクラスになります。
@@ -398,25 +458,25 @@ class Book extends Model
 
 中身は空ですが、一旦このままで構いません。
 
-### モデルの命名規則
+#### **2. モデルの命名規則**
 モデルは命名規則によってテーブルとマッピングされます。
 テーブル名の単数形を名前につけることで、**自動的にそのテーブルとマッピング**します。
 
-## シーディング
+## 6. シーディング
 シーディングは、テストデータやマスタデータなどのアプリケーション起動時に必要なレコードをコマンドで登録する仕組みです。
 次の手順で実行します。
 
 1. シーダーファイルの作成
 1. シーディングの実行
 
-#### **1.シーダーファイルの作成**
+#### **1. シーダーファイルの作成**
 
 シーダーファイルはArtisanの`make:seeder`コマンドを使用して作成します。
 
 以下のコマンドを実行します。
 
 ```bash
-% php artisan make:seeder BooksTableSeeder
+php artisan make:seeder BooksTableSeeder
 ```
 
 以下のようなメッセージが表示されれば成功です。
@@ -534,14 +594,12 @@ class DatabaseSeeder extends Seeder
 
 以上で準備完了です。
 
-## シーディングの実行
-
-#### 　**1. シーディングの実行**
+#### 　**4. シーディングの実行**
 
 シーディングを実行するにはArtisanの`db:seed`コマンドを実行します。以下のコマンドを実行してください。
 
 ```bash
-% php artisan db:seed
+php artisan db:seed
 ```
 
 以下のようなメッセージが表示されれば成功です。
@@ -573,7 +631,7 @@ mysql> select * from books;
 以上でデータベース関連の設定は完了です。
 作業量が多かったかもしれませんが一度作ってしまえば、プロジェクトを共有しているユーザー全てが`migrate`と`db:seed`の2つのコマンドのみで、DBの初期化を行うことができます。
 
-## ルーティング
+## 7. ルーティング
 データベースの準備が整ったらアプリケーションを作成します。
 まずはルーティングから行なっていきましょう。
 
@@ -581,7 +639,7 @@ mysql> select * from books;
 
 [ルーティングとは](/web_application/laravel_tutorial/about_routes.md)
 
-#### 1. ルーティングの設定
+#### **1. ルーティングの設定**
 
 それでは、ルーティングの設定をしましょう。以下をweb.phpに記載しましょう。
 
@@ -607,8 +665,8 @@ use Illuminate\Support\Facades\Route;
 Route::resource('book', 'BookController');
 ```
 
-上記の通り設定すると、このURLでのアクセスだったらBookContoroller側のこのメソッドに処理をさせなさい、
-というルーティングを設定することが出来ます。
+上記の通り設定すると、このURLでのアクセスだったらBookContoroller側のこのメソッドに処理をさせなさい、というルーティングを設定することが出来ます。
+
 ルーティングを設定すると、以下の通りとなります。
 
 |リクエストメソッド|URI|コントローラー|CRUD画面を作る際の主な用途|
@@ -623,7 +681,7 @@ Route::resource('book', 'BookController');
 
 `以降、resourceメソッドでルーティングしている前提でコントローラを作成します。`
 
-## コントローラの作成
+## 8. コントローラの作成
 ルーティングを設定したら次はコントローラを作成します。
 コントローラはルーティングされてきたリクエストを受け取り、レスポンスを作成する役割を果たします。
 レスポンスとしてHTMLを返す場合はViewに処理を依頼します。
@@ -632,7 +690,7 @@ Route::resource('book', 'BookController');
 コントローラの作成にはArtisanの`make:controller`コマンドを使用します。
 
 ```bash
-% php artisan make:controller BookController
+php artisan make:controller BookController
 ```
 
 以下のようなメッセージが表示されれば成功です。
@@ -692,12 +750,12 @@ compact関数を使うことで簡単に連想配列を渡すことができま�
 
 DBからの値取得はEloquentという仕組みを利用しています。Eloquentに関しては「Eloquent ORM」の章で説明します。
 
-## ビューの作成
+## 9. ビューの作成
 
 では最後にビューを作成しましょう。
 ビューは`resources/views`ディレクトリに作成します。
 
-#### **1.index.blade.phpの作成**
+#### **1. 書籍一覧画面：index.blade.phpの作成**
 
 bookディレクトリを作成し、その中にindex.blade.phpを作成しましょう。
 
@@ -828,7 +886,7 @@ public function index()
 
 最後にindex.blade.phpでは受け取った値を元に画面を生成し、それが最終的にブラウザに表示されたというわけです。
 
-#### **2.edit.blade.phpの作成**
+#### **2. 書籍編集画面：edit.blade.phpの作成**
 
 では、次にedit.blade.phpを作成しましょう。今の流れを意識しながら作成してください。
 > resources/views/book/edit.blade.php
@@ -847,7 +905,6 @@ public function index()
     <div class="row">
         <div class="col-md-8 col-md-offset-1">
             <form action="/book/{{ $book->id }}" method="post">
-                <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
@@ -890,12 +947,28 @@ public function index()
 上記のように、一覧画面のIDをクリックすると、そのIDに対応する編集画面が上記のように表示されたらOKです。
 
 
-## ビューの継承
+## 10. ビューの継承
 
-ところで、ヘッダー部分は書籍一覧画面と書籍登録画面で同じですね。
-こういう時、ビューの継承を利用すると効率的に作成することができます。
+ところで、書籍一覧画面と書籍登録画面のヘッダー部分のプログラムは同じですね。
+また、システムではヘッダーやサイドバーなど、すべての画面で共通して同じ表示レイアウトにしたい場合などもあります。
 
-### 1. layout.blade.phpの作成
+ - 複数の画面で、共通した定義やレイアウトを使用する
+
+もし、システムの画面が数多く存在し、同じ定義やレイアウトを使用したいのに、画面の数だけ同じプログラムを用意するとどうなるでしょうか？以下の問題点があります。
+
+ - 定義や動作に不具合があると、同じプログラムなのに、修正数が増加する
+
+これにより、その数だけ修正をしなければなりませんので、修正数や直した箇所のテストなどが増えることになります。
+
+そこで、同じプログラムを書いているのであれば、1つのプログラムにして、利用する所でそのプログラムを読み込むようにします。
+
+これを、`ビューの継承`と言います。
+
+継承を利用すると、効率的にシステムを作成することができます。
+
+共通のビューファイルを、`親ビュー`と言い、親のビューを読み込む方を、`子ビュー`といいます。
+
+#### **1. 親ビュー：layout.blade.phpの作成**
 親ビューになるlayout.blade.phpを作成します。共通となる要素のみ記述します。
 
 > views/book/layout.blade.php
@@ -907,6 +980,7 @@ public function index()
 @yield('content')
 ```
 
+#### **2. index.blade.phpの修正**
 次にindex.blade.phpを書き換えます。
 
 ```php
@@ -960,7 +1034,7 @@ public function index()
 これで、layout.blade.phpを継承することを宣言したことになります。
 すると、layoutの@yield('content')部分に@section('content')〜@endsectionで囲った部分が挿入されます。
 
-### 2. layout.blade.phpの修正
+#### **3. layout.blade.phpの修正**
 では、edit.blade.phpにもlayoutを継承させましょう。
 
 > resources/views/book/edit.blade.php
@@ -977,7 +1051,6 @@ public function index()
     <div class="row">
         <div class="col-md-8 col-md-offset-1">
             <form action="/book/{{ $book->id }}" method="post">
-                <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
@@ -1006,7 +1079,8 @@ public function index()
 ```
 
 共通のCSSの読み込みや、フッター、ヘッダーなどをlayout.blade.phpに記入することで、継承している全ての画面に反映させることができます。
-一旦、一覧画面と編集画面が正しく表示されているか、サーバーを起動して確認しておきましょう。
+
+では、一覧画面と編集画面が正しく表示されているかを、サーバーを起動して確認しておきましょう。
 サーバーの起動方法は、以下を参照してください。
 
 [laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
@@ -1019,12 +1093,12 @@ Eloquentについては以下のリンクを参照して学習してください
 Eloquentを理解したら、次の実装に移りましょう。
 
 
-## CRUDの実装
+## 11. CRUDの実装
 
 では残していた更新、登録、削除の機能を実装していきましょう。
 まずは更新を作成します。
 
-#### 1. 更新処理の作成
+#### **1. 更新処理の作成**
 編集画面はできているので、コントローラにupdateメソッドを定義します。
 
 > app/Http/Controllers/BookController.php
@@ -1035,7 +1109,6 @@ Eloquentを理解したら、次の実装に移りましょう。
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use App\Book;
 
@@ -1077,7 +1150,7 @@ updateメソッドの$idにはURI：`book/{book}`の{book}の部分の値が代�
 requestはクライアントからのリクエスト情報が入っています。
 クライアントが入力した値を取得する場合は`$request->[要素名]`で取得します。
 
-#### 2. 削除処理の実装
+#### **2. 削除処理の実装**
 書籍一覧画面にすでに削除ボタンは作成しているので、コントローラにdestroyメソッドを定義します。
 
 > app/Http/Controllers/BookController.php
@@ -1087,7 +1160,6 @@ requestはクライアントからのリクエスト情報が入っています�
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use App\Book;
 
@@ -1108,7 +1180,7 @@ class BookController extends Controller
         return view('book/create', compact('book'));
     }
 
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
         $book = new Book();
         $book->title = $request->title;
@@ -1128,7 +1200,7 @@ class BookController extends Controller
         return view('book/edit', compact('book'));
     }
 
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $book = Book::findOrFail($id);
         $book->title = $request->title;
@@ -1149,7 +1221,7 @@ class BookController extends Controller
 }
 ```
 
-#### 3.登録処理の共通化の為、form.blade.phpを作成する
+#### **3. 登録処理の共通化の為、form.blade.phpを作成する**
 
 最後に登録処理ですが、画面はedit.blade.phpとほぼ同じなので、再利用するようにしましょう。
 まず`views/book`ディレクトリに共通部分を記述するform.blade.phpを作成します。
@@ -1166,7 +1238,6 @@ edit.blade.phpの@section内部を全て移動させます。
     <div class="row">
         <div class="col-md-8 col-md-offset-1">
             <form action="/book/{{ $book->id }}" method="post">
-                <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
@@ -1196,7 +1267,7 @@ edit.blade.phpの@section内部を全て移動させます。
 次に新規登録時と更新時で異なる部分だけ`@if`を使用して分岐させます。
 今回の場合、formタグ部分だけ書き換えればOKです。
 
-#### 4. form.blade.phpに@ifを追加し、formの切り替え分岐を作成する
+#### **4. form.blade.phpに@ifを追加し、formの切り替え分岐を作成する**
 
 <form>タグを、新規登録画面と編集画面の場合で、以下のように分岐させる処理を書きます。
 
@@ -1214,7 +1285,6 @@ hiddenタグに_method、value="PUT"を定義すれば、methodをPUTとして�
         <form action="/book" method="post">
     @elseif($target == 'update')
         <form action="/book/{{ $book->id }}" method="post">
-        <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
         <input type="hidden" name="_method" value="PUT">
     @endif
 ```
@@ -1234,7 +1304,6 @@ hiddenタグに_method、value="PUT"を定義すれば、methodをPUTとして�
             <form action="/book" method="post">
                 @elseif($target == 'update')
                 <form action="/book/{{ $book->id }}" method="post">
-                    <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
                     <input type="hidden" name="_method" value="PUT">
                     @endif
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -1262,7 +1331,7 @@ hiddenタグに_method、value="PUT"を定義すれば、methodをPUTとして�
 </div>
 ```
 
-#### 5. edit.blade.phpの修正
+#### **5. edit.blade.phpの修正**
 
 次はedit.blade.phpを以下のように書き換えます。
 
@@ -1277,7 +1346,7 @@ hiddenタグに_method、value="PUT"を定義すれば、methodをPUTとして�
 `@include`を使用して、form.blade.phpを`@section`内に挿入します。
 その際、target変数にupdateという値を渡します。
 
-#### 6. create.blade.phpの作成
+#### **6. 書籍登録画面：create.blade.phpの作成**
 
 では、新しく`views/book/`ディレクトリにcreate.blade.phpを作成しましょう。
 
@@ -1294,7 +1363,7 @@ targetをstoreに書き換えるだけです。
 これで、新規登録の時と編集の時で、formの内容が分岐される仕組みができます。
 登録時のコントローラが未作成ですので`createメソッドとstoreメソッドを追加`しましょう。
 
-#### 7. BookControllerの修正
+#### **7. BookControllerの修正**
 
 > app/Http/Controllers/BookController.php
 
@@ -1304,7 +1373,6 @@ targetをstoreに書き換えるだけです。
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use App\Book;
 
@@ -1325,7 +1393,7 @@ class BookController extends Controller
         return view('book/create', compact('book'));
     }
 
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
         $book = new Book();
         $book->title = $request->title;
@@ -1345,7 +1413,7 @@ class BookController extends Controller
         return view('book/edit', compact('book'));
     }
 
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $book = Book::findOrFail($id);
         $book->title = $request->title;
@@ -1380,7 +1448,7 @@ create.blade.phpでは$bookを受け取るようになっています。
 
 [laravelサーバー起動手順](/web_application/laravel_tutorial/start_server.md)
 
-#### 8. 新規登録の確認
+#### **8. 新規登録の動作確認**
 
 まずは一覧画面に遷移します。URLは、http://localhost:8000/book ですね。
 
@@ -1404,7 +1472,7 @@ create.blade.phpでは$bookを受け取るようになっています。
 
 以上が新規登録の動作確認でした。もしエラーなどになったら、プログラムを見直してみましょう。
 
-#### 9. 編集機能の確認
+#### **9. 編集機能の動作確認**
 
 新規登録で入力した情報がすべて間違っていたため。修正したいと思います。先程のIDが4の箇所をクリックして、編集画面に移ります。以下のように変更しましょう。
 
@@ -1421,7 +1489,7 @@ create.blade.phpでは$bookを受け取るようになっています。
 
 以上が編集機能の動作確認でした。もしエラーなどになったら、プログラムを見直してみましょう。
 
-#### 10. 削除機能の確認
+#### **10. 削除機能の動作確認**
 
 最後に、削除機能を確認しましょう、折角登録したましたが、ID4の本の情報を削除しましょう。
 
@@ -1430,14 +1498,14 @@ create.blade.phpでは$bookを受け取るようになっています。
 
 ![一覧画面](laravel_tutorial/images/index_blade_4.png)
 
-## バリデーション
+## 12. バリデーション
 
 最後にバリデーションを作成しましょう。
 バリデーションとは入力内容のチェックのことです。
 いくつか方法がありますが、フォームリクエストを作成する方法を紹介します。
 フォームリクエストを作成するにはArtisanの`make:request`を使用します。
 
-#### 1. BookRequest.phpの作成
+#### **1. BookRequest.phpの作成**
 以下のコマンドを実行してください。
 
 ```bash
@@ -1452,7 +1520,7 @@ Request created successfully.
 
 新たに`app/Http/Requests`ディレクトリが作成され、そこにBookRequest.phpが作成されます。
 
-#### 2. BookRequest.phpにバリデーションルールを記載
+#### **2. BookRequest.phpにバリデーションルールを記載**
 
 BookRequest.phpのauthorizeメソッドと、rulesメソッドを以下のように修正します。
 
@@ -1508,7 +1576,7 @@ class BookRequest extends FormRequest
 https://readouble.com/laravel/5.7/ja/validation.html
 
 
-#### 3. BookController.phpの修正
+#### **3. BookController.phpの修正**
 
 次にBookController.phpのstoreメソッドとupdateメソッドの引数の型指定をRequestからBookRequestに書き換えます。
 
@@ -1595,7 +1663,7 @@ class BookController extends Controller
 
 しかし、このままでは何が起きているのかわからないので、エラーメッセージを表示するようにしましょう。
 
-#### 4. message.blade.phpの作成
+#### **4. message.blade.phpの作成**
 
 `views/book`ディレクトリにmessage.blade.phpを作成します。
 
@@ -1617,10 +1685,14 @@ class BookController extends Controller
 </div>
 ```
 
-#### 5. form.blade.phpの修正
+#### **5. form.blade.phpの修正**
 
 次に、form.blade.phpに、message.blade.phpを挿入します。
-挿入は、@includeを用いましょう。
+挿入は、@includeを用いましょう。挿入する位置は、
+
+    <div class="col-md-8 col-md-offset-1">
+
+のすぐ下です。
 
 > resources/views/book/form.blade.php
 
@@ -1633,13 +1705,11 @@ class BookController extends Controller
     </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-1">
-            <!-- 以下@includeを追加します  -->
             @include('book/message')
             @if($target == 'store')
             <form action="/book" method="post">
                 @elseif($target == 'update')
                 <form action="/book/{{ $book->id }}" method="post">
-                    <!-- updateメソッドにはPUTメソッドがルーティングされているのでPUTにする -->
                     <input type="hidden" name="_method" value="PUT">
                     @endif
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
