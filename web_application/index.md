@@ -6,7 +6,6 @@
 1. [PHP基礎文法2](php_basics/php02.md)
 1. [PHP基礎文法3](php_basics/php03.md)
 1. [PHP基礎文法4](php_basics/php04.md)
-1. [【準備中です！】デバッグの学習](debug1.md)
 1. [世界一かんたんなアプリシリーズを見てみよう](php_basics/php_app.md)
 1. [Linuxコマンド](linux_command.md)
 1. [Git](git.md)
