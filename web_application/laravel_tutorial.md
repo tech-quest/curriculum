@@ -1269,7 +1269,7 @@ edit.blade.phpの@section内部を全て移動させます。
 
 #### **4. form.blade.phpに@ifを追加し、formの切り替え分岐を作成する**
 
-<form>タグを、新規登録画面と編集画面の場合で、以下のように分岐させる処理を書きます。
+`<form>`タグを、新規登録画面と編集画面の場合で、以下のように分岐させる処理を書きます。
 
 @ifで、変数$targetがstoreならば、新規画面用としてメソッドをpost、
 @elseifにより変数$targetがupdateならば、methodはHTMLの仕様上postとgetしか記載が出来ませんが、
