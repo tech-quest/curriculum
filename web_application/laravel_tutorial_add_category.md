@@ -1586,19 +1586,7 @@ class Book extends Model
 
 カテゴリは1つだけを選択することになりますので、1つだけ選択できるような入力機能で実現しましょう。今まではキーボードからテキストエリアに入力する機能でしたが、セレクトボックスというもので実現しようと思います。
 
-セレクトボックスというのは以下の入力機能です。
-
-<select>
-    <option value="">選択してください</option>
-    <option value="1">PHP</option>
-    <option value="2">Python</option>
-    <option value="3">Java</option>
-</select>
-<br>
-<br>
-これを実際に画面で作っていきます！
-<br>
-<br>
+では、実際に画面で作っていきましょう！
 
 #### **1. BookControllerの修正**
 
