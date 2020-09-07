@@ -12,7 +12,7 @@
   - [まずは動画で理解しましょう！！](https://youtu.be/JNGAE9twczM)
   - [D043:天気の表示](https://paiza.jp/challenges/132/ready)
   - [D002:数の比較](https://paiza.jp/challenges/31/ready)
-  - [D151:お菓子のプレゼント](https://paiza.jp/challenges/105/ready)
+  - [D151:お菓子のプレゼント](https://paiza.jp/challenges/367/ready)
 - for文
   - [まずは動画で理解しましょう！！](https://youtu.be/UuvBGxNNt9M)
   - [D132:N回ゲーム](https://paiza.jp/challenges/328/ready)
