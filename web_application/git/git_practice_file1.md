@@ -56,15 +56,25 @@
     [参考](/web_application/app_php/app_contact_form_php_formac.md) 
 
 1. リモートリポジトリに変更履歴を共有
+##### #慣れるまでは逐一 「git status」を使うようにしましょう
     ```
+    $ git status
     $ git add .   
     $ git status
+    $ git commit  -m “コミットメッセージ”
+    $ git status
+    $ git push origin
+    ```
+
+    ##### 慣れてきたらこの3つのコマンドだけで大丈夫です！
+    ```
+    $ git add .   
     $ git commit  -m “コミットメッセージ”
     $ git push origin
     ```
 ![repository pass の取得方法](images/git_push.png)
 
-再度、git clone して練習しましょう！
+再度、 `git clone` して練習しましょう！
 
 慣れてきたら次のステップに進みましょう！！
 
