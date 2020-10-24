@@ -19,6 +19,7 @@
 
 1. プルリクエストの作成
 1. マージ(追加機能を反映)
+![git push イメージ図](images/pullrequest_merge_image.png)
 
 
 ## やってみよう
