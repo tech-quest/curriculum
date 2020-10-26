@@ -10,7 +10,7 @@
 ![git clone イメージ図](images/clone_image.png)
 
 1. ブランチの作成
-![git clone イメージ図](images/branch_image.png)
+![branch イメージ図](images/branch_image.png)
 
 1. 機能を追加
 ![お問い合わせフォーム画像](images/contact_form_pic.png)
@@ -40,6 +40,11 @@
 ## 解説
 ```
 $ git branch -a =「リモートブランチを含んだブランチの一覧を表示」
+
 $ git checkout -b 作成するブランチ名 =「ブランチの作成」
+
 $ git push -u origin 作成したブランチ名 =「作成したブランチをリモートに共有
 ```
+
+[戻る](/web_application/index.md) /
+[トップへ](/README.md)
