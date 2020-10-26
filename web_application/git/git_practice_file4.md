@@ -9,7 +9,7 @@
 ![git clone イメージ図](images/clone_image.png)
 
 1. ブランチの作成
-![git clone イメージ図](images/branch_image.png)
+![branch イメージ図](images/branch_image.png)
 
 1. 機能を追加
 ![お問い合わせフォーム画像](images/contact_form_pic.png)
@@ -19,13 +19,13 @@
 
 1. プルリクエストの作成
 1. 新しいブランチ作成
-![git clone イメージ図](images/branch_image.png)
+![branch イメージ図](images/branch_image.png)
 1. 機能追加
 1. マージ(追加機能を反映)
-![git push イメージ図](images/pullrequest_merge_image.png)
+![プルリクエスト・マージ イメージ図](images/pullrequest_merge_image.png)
 
 1. ブランチの状態を最新にあわせる
-![git push イメージ図](images/rebase_image.png)
+![rebase イメージ図](images/rebase_image.png)
 
 
 ## やってみよう
