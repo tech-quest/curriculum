@@ -20,12 +20,11 @@
 
 1. 他人のアカウントのリモートリポジトリをコピーする
 
-
     1. コピーしたいリポジトリがあるGithubアカウントでforkをクリック
     1. コピー先のアカウントを選択する
 
     [ここからコピーするアカウントへ](https://github.com/KatsuyaTanaka95/app_contact/commit/ee4a5ee0b104b06a82434d874fc9c00b1b008111)
-    ![git push イメージ図](images/fork_github.png)
+    ![git fork 手順](images/fork_github.png)
 
 1. リモートリポジトリをローカルリポジトリにコピーする
 
@@ -72,7 +71,7 @@
     $ git commit  -m “コミットメッセージ”
     $ git push origin
     ```
-![repository pass の取得方法](images/git_push.png)
+![リモートリポジトリに変更履歴を共有方法](images/git_push.png)
 
 再度、 `git clone` して練習しましょう！
 
