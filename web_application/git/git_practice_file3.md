@@ -66,3 +66,6 @@
         ```
         ![マージ手順5-1-1](images/confirm_merge.png)
         ![マージ手順5-1-2](images/confirm_merge2.png)
+
+        [戻る](/web_application/index.md) /
+        [トップへ](/README.md)
