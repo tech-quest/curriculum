@@ -70,6 +70,7 @@
     - 練習3でやったことをおもいだしてみよう
 
 ## 解説
+   ```
     git checkout (master) = (master) ブランチに移動する
 
     git pull origin = リモートリポジトリの選択したブランチ から最新状態をローカルブランチの選択したブランチに反映させる
@@ -78,4 +79,8 @@
 
     git push origin --force-with-lease = ローカルとリモートを比較しローカルが最新か確認。
     最新でなければ、PUSHを失敗にしてくれる。
+   ```
+
+   [戻る](/web_application/index.md) /
+   [トップへ](/README.md)
 
