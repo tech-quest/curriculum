@@ -7,11 +7,11 @@
 1. [Gitの基礎](https://prog-8.com/lessons/git/study/1)
 1. [Gitチュートリアル](https://www.delftstack.com/ja/tutorial/git/)
 
-
-以下の教材は作成中です！！
-1. 説明教材
-1. トレーニング教材初級編（反復練習用）
-1. トレーニング教材中級編（反復練習用）
+## Gitトレーニング
+1. [git トレーニング1](/web_application/git/git_practice_file1.md)
+1. [git トレーニング2](/web_application/git/git_practice_file2.md)
+1. [git トレーニング3](/web_application/git/git_practice_file3.md)
+1. [git トレーニング4](/web_application/git/git_practice_file4.md)
 
 ## ②検索してみよう
 もう少し詳しく調べてみたい方は、
