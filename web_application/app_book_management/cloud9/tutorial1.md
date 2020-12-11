@@ -602,7 +602,7 @@ http://localhost:8000/book
 > 一覧画面
 ![一覧画面](../img/check_store_action.png)
 
-②_3.書籍編集の画面で4つの項目を編集し、登録ボタンをクリック
+②_3.書籍編集の画面で4つの項目を修正し、登録ボタンをクリック
 
 > 編集画面
 ![check_edit_action](../img/check_edit_action.png)
@@ -616,13 +616,24 @@ http://localhost:8000/book
 
 ②_4.一覧画面に表示されたか確認
 
+> 一覧画面
+![check_up_action](../img/check_up_action.png)
+
 #### ③削除機能の動作確認
-最後に、削除機能を確認しましょう、折角登録したましたが、ID1の本の情報を削除しましょう。
 
-一覧画面の右端にゴミ箱のアイコンが表示されていると思います。ID1の箇所のゴミ箱ボタンを押しましょう。 
+③_1.まずは一覧画面に遷移します。
 
-一覧画面からID1の書籍情報が消えている事が確認できます。
+http://localhost:8000/book
 
+③_2.一覧画面の右端のゴミ箱のアイコンをクリック
+
+> 一覧画面
+![一覧画面](../img/check_store_action.png)
+
+③_3.一覧画面からID1の書籍情報が消えている事を確認
+
+> 一覧画面
+![check_index_action](../img/check_index_action.png)
 
 [戻る](/web_application/index.md) /
 [トップへ](/README.md)
