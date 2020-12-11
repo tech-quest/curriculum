@@ -1,6 +1,6 @@
 # 書籍管理アプリ(cloud9)2
 
-## 目次
+## 0. 目次
 [1.環境構築](#1-環境構築)
 
 [2.DBの準備](#2-DBの準備)
@@ -209,12 +209,6 @@ App/Book.phpディレクトリがあるか確認
 
 ### 3.Viewの作成
 
-①resources/views/ディレクトリの中にbookディレクトリを作成
-
-②resources/views/bookディレクトリの中にindex.blade.phpを作成
-
-③index.blade.phpに下記のコードをコピペ
-
 [resources/views/book/index.blade.php]
 
 ```php
@@ -408,8 +402,33 @@ class BookController extends Controller
     }
 }
 ```
+### 3.Routingの設定
 
-### 3.登録画面が表示されるか確認	
+web.phpファイルを編集
+
+[routes/web.php]
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('book', 'BookController@index');
+Route::get('/book/create', 'BookController@create');
+```
+
+### 4.登録画面が表示されるか確認	
 
 /book/create にアクセスしてみましょう。
 
@@ -461,17 +480,37 @@ class BookController extends Controller
 }
 ```
 
-### 2.書籍登録できるかの確認
+2.Routingの設定
 
-①.まずは一覧画面に遷移します。
+web.phpファイルを編集
 
-http://localhost:8000/book
+[routes/web.php]
 
-②.画面下の新規作成ボタンをクリック
-> 一覧画面
-![check_index_action](../img/check_index_action.png)
+```php
+<?php
 
-③.書籍登録の画面で4つの項目を入力し、登録ボタンをクリック
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('book', 'BookController@index');
+Route::get('/book/create', 'BookController@create');
+Route::post('/book', 'BookController@store');
+```
+
+
+### 3.書籍登録できるかの確認
+
+①.書籍登録の画面で4つの項目を入力し、登録ボタンをクリック
 > 登録画面
 ![check_create_action](../img/check_create_action.png)
 
@@ -482,12 +521,10 @@ http://localhost:8000/book
 コメント →　s
 ```
 
-④.一覧画面に表示されたか確認
+②.一覧画面に表示されたか確認
 
 > 一覧画面
 ![check_store_action](../img/check_store_action.png)
-
-
 
 ## 6. 書籍編集画面の作成
 
@@ -535,7 +572,7 @@ http://localhost:8000/book
 </div>
 ```
 
-### 2.Routingの設定
+### 2.BookControllerの設定
 
 [routes/web.php]
 
@@ -665,4 +702,5 @@ http://localhost:8000/book
 ![check_index_action](../img/check_index_action.png)
 
 [戻る](/web_application/index.md) /
-[トップへ](/README.md)
+[トップへ](/README.md) / 
+[目次へ](#0-目次)
