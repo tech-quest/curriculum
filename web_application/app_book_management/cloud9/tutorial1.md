@@ -1,6 +1,6 @@
 # 書籍管理アプリ(cloud9)
 
-## 目次
+## 0. 目次
 [1.環境構築](#1-環境構築)
 
 [2.DBの準備](#2-DBの準備)
@@ -10,6 +10,8 @@
 [4.書籍登録画面の作成](#4-書籍登録画面の作成)
  
 [5.書籍編集画面の作成](#5-書籍編集画面の作成)
+
+[6.機能の動作確認](#6-機能の動作確認)
 
 ## 1. 環境構築
 
@@ -574,7 +576,7 @@ class BookController extends Controller
 > 編集画面
 ![check_edit_action](../img/check_edit_action.png)
 
-### 4.機能の動作確認
+### 6. 機能の動作確認
 
 #### ①新規登録機能の動作確認
 
@@ -648,4 +650,5 @@ http://localhost:8000/book
 ![check_index_action](../img/check_index_action.png)
 
 [戻る](/web_application/index.md) /
-[トップへ](/README.md)
+[トップへ](/README.md) / 
+[目次へ](#0-目次)
