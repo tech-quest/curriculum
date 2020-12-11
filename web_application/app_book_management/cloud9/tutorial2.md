@@ -114,9 +114,6 @@ mysql  Ver 14.14 Distrib 5.7.23, for Linux (x86_64) using  EditLine wrapper
 Empty set (0.00 sec)
 ```
 
-とありますのでまだテーブルはないことが確認できます。
-ここからデータベースマイグレーションでテーブルを作成していきますので MySQL からログアウトします。
-
 ⑧MySQL からログアウト
 
 `$ exit;`
@@ -325,7 +322,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('book', 'BookController');
+Route::get('book', 'BookController@index');
+
 ```
 
 ### 8.一覧画面が表示されるか確認
@@ -408,6 +406,47 @@ class BookController extends Controller
         $book = new Book();
         return view('book/create', compact('book'));
     }
+}
+```
+
+### 3.登録画面が表示されるか確認	
+
+/book/create にアクセスしてみましょう。
+
+> 登録画面
+![check_create_action](../img/check_create_action.png)
+
+## 5. 書籍登録機能の作成
+
+### 1.BookControllerの設定
+
+[app/Http/Controllers/BookController.php]
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Book;
+
+class BookController extends Controller
+{
+    public function index()
+    {
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
+
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
+    }
+
+    public function create()
+    {
+        $book = new Book();
+        return view('book/create', compact('book'));
+    }
 
     public function store(Request $request)
     {
@@ -422,14 +461,35 @@ class BookController extends Controller
 }
 ```
 
-### 3.登録画面が表示されるか確認	
+### 2.書籍登録できるかの確認
 
-/book/create にアクセスしてみましょう。
+①.まずは一覧画面に遷移します。
 
+http://localhost:8000/book
+
+②.画面下の新規作成ボタンをクリック
+> 一覧画面
+![check_index_action](../img/check_index_action.png)
+
+③.書籍登録の画面で4つの項目を入力し、登録ボタンをクリック
 > 登録画面
 ![check_create_action](../img/check_create_action.png)
 
-## 5. 書籍編集画面の作成
+```
+書籍名　→　a
+著者名　→　a
+価格　　→　2000
+コメント →　s
+```
+
+④.一覧画面に表示されたか確認
+
+> 一覧画面
+![check_store_action](../img/check_store_action.png)
+
+
+
+## 6. 書籍編集画面の作成
 
 ### 1.edit.blade.phpの作成
 
@@ -556,33 +616,8 @@ class BookController extends Controller
 > 編集画面
 ![check_edit_action](../img/check_edit_action.png)
 
-### 4.機能の動作確認
-
 #### ①新規登録機能の動作確認
 
-①_1.まずは一覧画面に遷移します。
-
-http://localhost:8000/book
-
-①_2.画面下の新規作成ボタンをクリック
-> 一覧画面
-![check_index_action](../img/check_index_action.png)
-
-①_3.書籍登録の画面で4つの項目を入力し、登録ボタンをクリック
-> 登録画面
-![check_create_action](../img/check_create_action.png)
-
-```
-書籍名　→　7日でわかるPHP入門！
-著者名　→　神奈川 裕次郎
-価格　　→　4000
-コメント →　あっという間にPHPが理解できます！
-```
-
-①_4.一覧画面に表示されたか確認
-
-> 一覧画面
-![check_store_action](../img/check_store_action.png)
 
 
 #### ②編集機能の動作確認
