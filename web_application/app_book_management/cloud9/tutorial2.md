@@ -9,7 +9,13 @@
  
 [4.書籍登録画面の作成](#4-書籍登録画面の作成)
  
-[5.書籍編集画面の作成](#5-書籍編集画面の作成)
+[5.書籍登録機能の作成](#5-書籍登録機能の作成)
+
+[6.書籍編集画面の作成](#6-書籍編集画面の作成)
+
+[7.編集機能の作成](#7-編集機能の作成)
+
+[8.削除機能の作成](#8-削除機能の作成)
 
 ## 1. 環境構築
 
@@ -574,9 +580,7 @@ Route::post('/book', 'BookController@store');
 
 ### 2.BookControllerの設定
 
-[routes/web.php]
-
-app/Http/Controllers/BookController.php
+[app/Http/Controllers/BookController.php]
 
 ```php
 <?php
@@ -642,33 +646,141 @@ class BookController extends Controller
 
         return redirect("/book");
     }
-
 }
 ```
 
-### 3.編集画面が表示されるか確認	
+3.Routingの設定
+
+web.phpファイルを編集
+
+[routes/web.php]
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('book', 'BookController@index');
+Route::get('/book/create', 'BookController@create');
+Route::post('/book', 'BookController@store');
+Route::get('book/{book}/edit', 'BookController@edit');
+```
+
+### 4.編集画面が表示されるか確認	
 
 /book/edit にアクセスしてみましょう。
 
 > 編集画面
 ![check_edit_action](../img/check_edit_action.png)
 
-#### ①新規登録機能の動作確認
+## 7. 編集機能の作成
 
+### 1.BookControllerの設定
 
+[app/Http/Controllers/BookController.php]
 
-#### ②編集機能の動作確認
+```php
+<?php
 
-②_1.まずは一覧画面に遷移します。
+namespace App\Http\Controllers;
 
-http://localhost:8000/book
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Book;
 
-②_2.ID1をクリック
+class BookController extends Controller
+{
+    public function index()
+    {
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
 
-> 一覧画面
-![一覧画面](../img/check_store_action.png)
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
+    }
 
-②_3.書籍編集の画面で4つの項目を修正し、登録ボタンをクリック
+    public function create()
+    {
+        $book = new Book();
+        return view('book/create', compact('book'));
+    }
+
+    public function store(Request $request)
+    {
+        $book = new Book();
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+    
+    public function edit($id)
+    {
+        // DBよりURIパラメータと同じIDを持つBookの情報を取得
+        $book = Book::findOrFail($id);
+
+        // 取得した値をビュー「book/edit」に渡す
+        return view('book/edit', compact('book'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+}
+```
+
+### 2.Routingの設定
+
+web.phpファイルを編集
+
+[routes/web.php]
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('book', 'BookController@index');
+Route::get('/book/create', 'BookController@create');
+Route::post('/book', 'BookController@store');
+Route::get('book/{book}/edit', 'BookController@edit');
+Route::put('book/{book}', 'BookController@update');
+```
+
+### 3.編集機能の動作確認
+
+①.書籍編集の画面で4つの項目を修正し、登録ボタンをクリック
 
 > 編集画面
 ![check_edit_action](../img/check_edit_action.png)
@@ -680,23 +792,121 @@ http://localhost:8000/book
 コメント →　たったの2週間でPHPが理解できます！
 ```
 
-②_4.一覧画面に表示されたか確認
+②.一覧画面に表示されたか確認
 
 > 一覧画面
 ![check_up_action](../img/check_up_action.png)
 
-#### ③削除機能の動作確認
+## 8. 削除機能の作成
 
-③_1.まずは一覧画面に遷移します。
+### 1.BookControllerの設定
 
-http://localhost:8000/book
+[app/Http/Controllers/BookController.php]
 
-③_2.一覧画面の右端のゴミ箱のアイコンをクリック
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Book;
+
+class BookController extends Controller
+{
+    public function index()
+    {
+        // DBよりBookテーブルの値をすべて取得
+        $books = Book::all();
+
+        // 取得した値をビュー「book/index」に渡す
+        return view('book/index', compact('books'));
+    }
+
+    public function create()
+    {
+        $book = new Book();
+        return view('book/create', compact('book'));
+    }
+
+    public function store(Request $request)
+    {
+        $book = new Book();
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+    
+    public function edit($id)
+    {
+        // DBよりURIパラメータと同じIDを持つBookの情報を取得
+        $book = Book::findOrFail($id);
+
+        // 取得した値をビュー「book/edit」に渡す
+        return view('book/edit', compact('book'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price = $request->price;
+        $book->comment = $request->comment;
+        $book->save();
+        return redirect("/book");
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return redirect("/book");
+    }
+}
+```
+
+2.Routingの設定
+
+web.phpファイルを編集
+
+[routes/web.php]
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('book', 'BookController@index');
+Route::get('/book/create', 'BookController@create');
+Route::post('/book', 'BookController@store');
+Route::get('book/{book}/edit', 'BookController@edit');
+Route::delete('book/{book}', 'BookController@destroy');
+```
+
+### 3.削除機能の動作確認
+
+①一覧画面の右端のゴミ箱のアイコンをクリック
 
 > 一覧画面
 ![一覧画面](../img/check_store_action.png)
 
-③_3.一覧画面からID1の書籍情報が消えている事を確認
+②一覧画面からID1の書籍情報が消えている事を確認
 
 > 一覧画面
 ![check_index_action](../img/check_index_action.png)
