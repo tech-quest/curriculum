@@ -495,7 +495,7 @@ class BookController extends Controller
 </div>
 ```
 
-### 2.Routingの設定
+### 2.BookControllerの設定
 
 [routes/web.php]
 
