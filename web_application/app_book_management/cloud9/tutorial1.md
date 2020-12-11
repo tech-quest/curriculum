@@ -74,11 +74,23 @@ mysql  Ver 14.14 Distrib 5.7.23, for Linux (x86_64) using  EditLine wrapper
 
 ### 8.画面表示できるかの確認
 
-Webサーバーの起動
+①Webサーバーの起動
 
 `$ php artisan serve --port=8080`
 
-previewをクリック(preview Running Application)
+②ブラウザーに表示
+
+```
+1.Previewをクリック
+2.Preview Running Applicationをクリック
+3.Browserをクリック
+```
+
+> cloud9画面
+![check_laravel_page](../img/check_laravel_page.png)
+
+> ブラウザ画面
+![ブラウザ画面](../img/laravel_page.png)
 
 ## 2. DBの準備
 
