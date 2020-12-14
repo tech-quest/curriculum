@@ -19,48 +19,19 @@
 
 ## 1. 環境構築
 
-### 1.PHPのバージョン確認
+### 1.テンプレートリポジトリのコピー
 
- `$ php -v`
+[こちらからGitHubへ！！](https://github.com/tech-quest-school/docker-laravel-template)
 
-### 2.MySQLのバージョン確認
+### 2.Dockerインストール＆起動
 
-`$ mysql --version`
+### 3.Laravelプロジェクトの新規作成
 
-### 3.インストール
+`$ make create-project`
 
-`$ sh -c "$(curl -fsSL https://gist.githubusercontent.com/MisterTeacher/e680ee45d468aa5e33c7f3d14175a1ca/raw/7d5ea114daf01b2ed1aa5ee62427f60574359976/cloud9-laravel-installer.sh)" `
+Dockerの起動やLaravelのインストールを自動でやってくれています。
 
-### 4.再度、バージョン確認(PHP)
-
-`$ php -v`
-
-PHPのバージョンを確認すると7.2になっていることを確認できます。
-
-```
-PHP 7.2.11 (cli) (built: Oct 16 2018 23:50:44) ( NTS )
-Copyright (c) 1997-2018 The PHP Group
-```
-
-### 5.再度、バージョン確認(MySQL)
-
-`$ mysql --version`
-
-MySQLのバージョンを確認すると5.7になっていることを確認できます。
-
-```
-mysql  Ver 14.14 Distrib 5.7.23, for Linux (x86_64) using  EditLine wrapper
-```
-
-### 6.Laravelインストール
-
-`$ composer create-project laravel/laravel sample`
-
-### 7.作成したディレクトリ移動
-
-`$ cd sample`
-
-### 8.画面表示できるかの確認
+### 4.プロジェクトの新規作成ができているか確認
 
 ①Webサーバーの起動
 
@@ -68,69 +39,61 @@ mysql  Ver 14.14 Distrib 5.7.23, for Linux (x86_64) using  EditLine wrapper
 
 ②ブラウザーに表示
 
-```
-1.Previewをクリック
-2.Preview Running Applicationをクリック
-3.Browserをクリック
-```
-
-> cloud9画面
-![check_laravel_page](../img/check_laravel_page.png)
-
 > ブラウザ画面
 ![ブラウザ画面](../img/laravel_page.png)
 
 ## 2. DBの準備
 
-### 1.DBとテーブルの作成
+### 1.Docker内のDBコンテナを起動
 
-①MySQL を止める
+$ docker-compose exec db bash
 
-`$ sudo service mysqld stop`
+### 2MySQL にログインする
 
-②MySQL を起動する
-
-`$ sudo service mysqld start`
-
-③MySQL にログインする
-
-`$ mysql -u root -p`
+mysql> mysql -u root -p
 
 パスワードを求められるかと思いますが、空白で Enter 押しちゃってください。
 
-④データベースを作成する
+### 3.データベースを作成する
 
-`$ create database laravel;`
+mysql> create database laravel;
 
 今回は laravel という名前のデータベースを作成しました。
 
-⑤.作成したデータベースを確認する
+### 4.作成したデータベースを確認する
 
-`$ show databases;`
+mysql> show databases;
 
-⑥作成したデータベースを選択する
+### 5.作成したデータベースを選択する
 
-`$ use laravel`
+mysql> use laravel
 
-⑦データベーステーブルを確認する
+### 6.データベーステーブルを確認する
 
-`$ show tables;`
+mysql> show tables;
 
-```
 Empty set (0.00 sec)
-```
+とありますのでまだテーブルはないことが確認できます。
+ここからデータベースマイグレーションでテーブルを作成していきますので MySQL からログアウトします。
 
-⑧MySQL からログアウト
+### 7.MySQL からログアウト
 
-`$ exit;`
+mysql> exit;
+
+### 8.Docker内のDBコンテナを停止
+
+root@f9f404343179:/# exit;
 
 ### 2.マイグレーション
 
-①booksテーブルを作成
+①Dockerのappコンテナを起動
+`$ docker-compose exec app bash`
+
+②booksテーブルを作成
 
 `$ php artisan make:migration create_books_table --create=books`
 
-②booksテーブルのupメソッドの修正
+③booksテーブルのupメソッドの修正
 
 [database/migrations/yyyy_mm_dd_hhssmm_create_books_table.php]
 
@@ -175,39 +138,51 @@ class CreateBooksTable extends Migration
 }
 ```
 
-③マイグレーションの実行
+④マイグレーションの実行
 
 `$ php artisan migrate`
 
+⑤.Docker内のappコンテナを停止
+
+`root@f9f404343179:/# exit`
+
 ### 3.マイグレーションができたかの確認
 
-①MySQL にログインする
+①1.Docker内のDBコンテナを起動
 
-`$ mysql -u root -p`
+`$ docker-compose exec db bash`
+
+2.MySQL にログインする
+
+``root@f9f404343179:/# mysql -u root -p`
 
 パスワードを求められるかと思いますが、空白で Enter 押しちゃってください。
 
-②laravelデータベースを選択する
+3.laravelデータベースを選択する
 
 `mysql>  use laravel;`
 
-③データベーステーブルを確認する
+4.データベーステーブルを確認する
 
 `mysql> show tables;`
 
-④booksテーブルが指定通り作成されているか確認
+5.booksテーブルが指定通り作成されているか確認
 
 `mysql> DESC books;`
 
-⑤MySQL からログアウト
+6.MySQL からログアウト
 
 `$ exit;`
+
+7.Docker内のDBコンテナを停止
+
+`root@f9f404343179:/# exit;`
 
 ## 3. 書籍一覧画面の作成
 
 ### 1.Modelの作成
 
-`$ php artisan make:model Book`
+`% docker-compose exec app php artisan make:model Book`
 
 ### 2.Modelが作成されたか確認
 
@@ -267,7 +242,7 @@ App/Book.phpディレクトリがあるか確認
 
 ### 4.Controllerの作成
 
-`$ php artisan make:controller BookController`
+`% docker-compose exec app php artisan make:controller BookController`
 
 ### 5.Controllerが作成されたか確認
 
