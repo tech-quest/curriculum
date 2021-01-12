@@ -911,6 +911,6 @@ Route::delete('book/{book}', 'BookController@destroy');
 > 一覧画面
 ![check_index_action](../img/check_index_action.png)
 
-[戻る](/web_application/index.md) /
-[トップへ](/README.md) / 
+[戻る](../index.md) /
 [目次へ](#0-目次)
+[トップへ](/README.md) / 

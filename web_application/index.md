@@ -19,7 +19,7 @@
 1. [DB/MySQL](db_mysql.md)
 1. [デバッグの練習（ローカル環境で）](debug2.md)
 1. [Laravel開発環境構築](/php/laravel/00.Laravel開発環境構築(MacOS版)/curriculum.md)
-1. [書籍管理アプリ](laravel_tutorial.md)
+1. [書籍管理アプリ](laravel_tutorial/crud_tutorial/app_book_management/index.md)
 1. [クラス](class.md)
 
 [トップへ](/README.md)

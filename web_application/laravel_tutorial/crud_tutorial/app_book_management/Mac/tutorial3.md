@@ -35,6 +35,6 @@
 
 必要なページと機能を追加していきましょう。
 
-[戻る](/web_application/index.md) /
-[トップへ](/README.md) / 
+[戻る](../index.md) /
 [目次へ](#0-目次)
+[トップへ](/README.md) / 
