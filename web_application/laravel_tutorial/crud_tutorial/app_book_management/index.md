@@ -1,5 +1,6 @@
 # 書籍管理アプリ
 
+[参考動画をみながら学習してみよう！](https://www.youtube.com/watch?v=88BkDSraU6Y)
 ## チュートリアル1
 [Macの方はこちら](Mac/tutorial1.md) /
 [Windowsの方はこちら](cloud9/tutorial1.md) 
