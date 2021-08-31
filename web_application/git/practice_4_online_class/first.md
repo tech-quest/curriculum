@@ -3,12 +3,15 @@
 ## 流れ
 
 1. リモートリポジトリをローカルリポジトリにコピーする
+
 ![git clone イメージ図](../images/clone_image.png)
 
 1. 機能を追加
+
 ![お問い合わせフォーム画像](../images/contact_form_pic.png)
 
 1. リモートリポジトリに変更履歴を共有
+
 ![git push イメージ図](../images/push_image.png)
 
 ## やってみよう
@@ -52,8 +55,10 @@
 
     +ボタンを押します！
     ![VSCode上でのadd方法](../images/add.png)
+
     コメントを書きます！(ex 今日の日付に修正)
     ![VSCode上でのcommit方法](../images/commit_msg.png)
+    
     修正の反映の準備をします！
     ![VSCode上でのcommit方法](../images/commit.png)    
 
