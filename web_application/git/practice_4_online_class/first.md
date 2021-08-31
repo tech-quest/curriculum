@@ -4,15 +4,15 @@
 
 1. リモートリポジトリをローカルリポジトリにコピーする
 
-![git clone イメージ図](../images/clone_image.png)
+    ![git clone イメージ図](../images/clone_image.png)
 
 1. 機能を追加
 
-![お問い合わせフォーム画像](../images/contact_form_pic.png)
+    ![お問い合わせフォーム画像](../images/contact_form_pic.png)
 
 1. リモートリポジトリに変更履歴を共有
 
-![git push イメージ図](../images/push_image.png)
+    ![git push イメージ図](../images/push_image.png)
 
 ## やってみよう
 

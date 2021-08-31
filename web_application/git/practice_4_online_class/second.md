@@ -4,27 +4,27 @@
 
 1. リモートリポジトリをローカルリポジトリにコピーする
 
-![git clone イメージ図](../images/clone_image.png)
+    ![git clone イメージ図](../images/clone_image.png)
 
 1. ブランチの作成(コードを修正するためにコピーを作成)
 
-![branch イメージ図](../images/make_branch.png)
+    ![branch イメージ図](../images/make_branch.png)
 
 1. コードを追加または修正
 
-![機能の修正or作成](../images/create_or_edit_functions.png)
+    ![機能の修正or作成](../images/create_or_edit_functions.png)
 
 1. プルリクエストの作成(コードレビューしてもらう準備)
 
-![プルリクの作成 イメージ図](../images/create_pullrequest.png)
+    ![プルリクの作成 イメージ図](../images/create_pullrequest.png)
 
 1. コードレビューとmergeをしてもらう
 
-![merge イメージ図](../images/merge.png)
+    ![merge イメージ図](../images/merge.png)
 
 1. pullする(リモートの状態をローカルに反映する)
 
-![pull イメージ図](../images/pull.png)
+    ![pull イメージ図](../images/pull.png)
 
 ## やってみよう
 
