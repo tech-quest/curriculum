@@ -15,13 +15,13 @@
 
 ## 1. 環境構築
 
-### 1.テンプレートリポジトリのコピー
+### 1.テンプレートリポジトリをコピーし、自分のGithubにリモートリポジトリを作成
 
 [こちらからGitHubへ！！](https://github.com/tech-quest-school/docker-laravel-template)
 
 ### 2.Dockerインストール＆起動
 
-### 3.Laravelプロジェクトの新規作成
+### 3.Laravelプロジェクトの新規作成(下記のコマンドを実行)
 
 `$ make create-project`
 
